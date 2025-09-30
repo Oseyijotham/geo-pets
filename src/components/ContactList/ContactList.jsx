@@ -28,7 +28,8 @@ import icons from './icons.svg';
 
 
 
-export const ContactList = ({lowerLimitProp, upperLimitProp, lowerLimitSetter, upperLimitSetter, children }) => {
+export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, upperLimitSetter, children }) => {
+  const [isTrue, setIfTrue] = useState(true);
   const sectionRef = useRef(null);
   const places = useSelector(selectPlaces);
   const filterUp = useSelector(selectFilterUp);
@@ -97,6 +98,8 @@ export const ContactList = ({lowerLimitProp, upperLimitProp, lowerLimitSetter, u
   
   const handleChange = (placesData, evt) => {
 
+    setIfTrue(evt.target.checked);
+
     dispatch(updateStatus({ data: { ...placesData, status: evt.target.checked } }));
   }
   
@@ -115,33 +118,37 @@ export const ContactList = ({lowerLimitProp, upperLimitProp, lowerLimitSetter, u
       {children}
       <div style={{ position: 'relative' }}>
         {console.log(isUpdateLoading)}
-        {(isLoading ||
-          isUpdateLoading) && (
-            <div className={css.backDrop}>
-              <div className={css.centerStyle}>
-                <ThreeCircles
-                  visible={true}
-                  height="60"
-                  width="60"
-                  color="#9225ff"
-                  radius="9"
-                  ariaLabel="three-dots-loading"
-                  wrapperStyle={{}}
-                  wrapperClass={css.loader}
-                />
-                {isLoading && (
-                  <p className={css.centerLabel}>
-                    Please be patient, fetching places can take up to 60 seconds
-                  </p>
-                )}
-                {isUpdateLoading && (
-                  <p className={css.centerLabel}>
-                    Saving place to your API Database
-                  </p>
-                )}
-              </div>
+        {(isLoading || isUpdateLoading) && (
+          <div className={css.backDrop}>
+            <div className={css.centerStyle}>
+              <ThreeCircles
+                visible={true}
+                height="60"
+                width="60"
+                color="#9225ff"
+                radius="9"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass={css.loader}
+              />
+              {isLoading && (
+                <p className={css.centerLabel}>
+                  Please be patient, fetching places can take up to 60 seconds
+                </p>
+              )}
+              {isUpdateLoading && isTrue === true && (
+                <p className={css.centerLabel}>
+                  Saving place to your API Database
+                </p>
+              )}
+              {isUpdateLoading && isTrue === false && (
+                <p className={css.centerLabel}>
+                  Removing place from your API Database
+                </p>
+              )}
             </div>
-          )}
+          </div>
+        )}
         {filterValue === '' && places.length !== 0 && (
           <ul className={css.contactsList} style={{ height: '315px' }}>
             {places.map(place => {

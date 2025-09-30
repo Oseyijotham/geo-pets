@@ -121,7 +121,7 @@ export const TasksAllList = ({ children }) => {
           {!isLoading && error && <b className={css.notification}>Error!!!</b>}
         </div>
       )}
-      {contacts.length !== 0 && (
+      {newRay.length !== 0 && (
         <ul className={css.contactsList}>
           {contacts.map(contact => {
             const myindex = contacts.indexOf(contact);
