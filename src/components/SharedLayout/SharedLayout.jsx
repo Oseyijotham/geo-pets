@@ -17,7 +17,7 @@ import { useState,Suspense } from 'react';
 import { logOut } from '../../redux/AuthRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthHook } from '../../customHook/customHook';
-import logoImage from './Airboxify.png';
+import logoImage from './GeoPets.png';
 import { useMediaQuery } from 'react-responsive';
 import svg from './icons.svg';
 import clsx from 'clsx';
@@ -49,9 +49,9 @@ export const SharedLayout = () => {
               <img src={logoImage} alt="Logo" width="80px" />
             </Frame>
             <IconLabelWrapper>
-              <IconLabelStart>Airbox</IconLabelStart>
+              <IconLabelStart>Geo</IconLabelStart>
               <IconLabelEnd>
-                <i>ify</i>
+                <i>Pets</i>
               </IconLabelEnd>
             </IconLabelWrapper>
           </Logo>
@@ -65,8 +65,8 @@ export const SharedLayout = () => {
         ></div>
         <nav>
           <Linker to="/sharedLayout/Home">Home</Linker>
-          <Linker to="/sharedLayout/sheduler">Scheduler</Linker>
-          <Linker to="/sharedLayout/sorting">Sorting</Linker>
+          <Linker to="/sharedLayout/sheduler">Pet Services</Linker>
+          <Linker to="/sharedLayout/sorting">Create Your API</Linker>
           <Linker to="/sharedLayout/profile">My Profile</Linker>
           <Button type="button" onClick={() => dispatch(logOut())}>
             Logout
@@ -134,7 +134,7 @@ export const SharedLayout = () => {
                       handleShedular();
                     }}
                   >
-                    Scheduler
+                    Pet Services
                   </Link>
                 </li>
                 <li className={css.headerWindowNavItem}>
@@ -143,7 +143,7 @@ export const SharedLayout = () => {
                     className={css.headerWindowNavLink}
                     onClick={() => setMenuHide(true)}
                   >
-                    Sorting
+                    Create Your API
                   </Link>
                 </li>
                 <li className={css.headerWindowNavItem}>

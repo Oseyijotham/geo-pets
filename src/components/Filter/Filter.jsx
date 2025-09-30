@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectContacts } from '../../redux/AppRedux/selectors';
+import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
   selectFilterUp,
@@ -10,16 +10,16 @@ import { nanoid } from 'nanoid';
 import css from './Filter.module.css';
 import { setFilter } from '../../redux/AppRedux/filterSlice';
 import {
-  deleteContact,
   openModal,
   fetchContactById,
   openMobileAndTabModal,
   updateStatus,
 } from '../../redux/AppRedux/operations';
+import icons from './icons.svg';
 
 export const Filter = () => {
   const searchTermId = nanoid();
-  const contacts = useSelector(selectContacts);
+  const places = useSelector(selectPlaces);
   const filterUpper = useSelector(selectFilterUp);
   const filterLower = useSelector(selectFilterDown);
   const filterValue = useSelector(selectContactsFilter);
@@ -28,9 +28,9 @@ export const Filter = () => {
     dispatch(setFilter(event.target.value));
     console.log(event.target.value);
   };
-  const bestMatches = contacts.filter(
-    contact =>
-      contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
+  const bestMatches = places.filter(
+    place =>
+      place.properties.names.primary.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
       filterValue.trim() !== ''
   );
 
@@ -43,13 +43,6 @@ export const Filter = () => {
     }
   };
 
-  const handleDelete = evt => {
-    evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
-    setTimeout(() => {
-      evt.target.style.boxShadow = 'none';
-    }, 1000);
-    dispatch(deleteContact(evt.target.name));
-  };
 
    const handleChange = (evt) => {
       dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
@@ -58,10 +51,10 @@ export const Filter = () => {
   return (
     <div className={css.contactList}>
       <label htmlFor={searchTermId}>
-        <span className={css.formLabel}>Search Appointments By Customer:</span>
+        <span className={css.formLabel}>Search Places by Name:</span>
         <input
           type="text"
-          placeholder="Enter Customer Name"
+          placeholder="Enter Place Name"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Enter Customer Name"
@@ -75,40 +68,43 @@ export const Filter = () => {
       </label>
 
       {filterValue !== '' && bestMatches.length !== 0 && (
-        <ul className={css.contactsList}>
-          {bestMatches.map(contact => {
-            const myindex = bestMatches.indexOf(contact);
+        <ul className={css.contactsList} style={{ height: '315px' }}>
+          {bestMatches.map(place => {
+            const myindex = bestMatches.indexOf(place);
             if (myindex >= filterLower && myindex < filterUpper) {
               return (
                 <li
-                  key={contact._id}
-                  data-id={contact._id}
+                  key={place.id}
+                  data-id={place.id}
                   className={css.contactsItem}
                   onClick={handleModalOpen}
                 >
-                  <span className={css.contactsData} data-id={contact._id}>
+                  <span className={css.contactsData} data-id={place.id}>
                     <input
                       type="checkbox"
                       className={css.checkbox}
-                      checked={contact.status}
-                      name={contact._id}
                       onChange={handleChange}
                     />
                     :{' '}
-                    <span className={css.contactsPhone} data-id={contact._id}>
-                      {contact.name}
+                    <span className={css.contactsPhone} data-id={place.id}>
+                      {place.properties.names.primary}
                     </span>
                   </span>
-                  <span className={css.contactsButtonArea}>
-                    <button
-                      type="submit"
-                      className={css.contactsButton}
-                      name={contact._id}
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                  </span>
+                  {place.properties.socials.length !== 0 && (
+                    <span className={css.contactsButtonArea}>
+                      <a
+                        className={css.contactsButton}
+                        name={place.id}
+                        href={place.properties.socials[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <svg width="20" height="20" className={css.socialsIcon}>
+                          <use href={`${icons}#icon-facebook`} />
+                        </svg>
+                      </a>
+                    </span>
+                  )}
                 </li>
               );
             }

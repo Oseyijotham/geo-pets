@@ -1,22 +1,21 @@
-import { addContact, saveCustomerName } from '../../redux/AppRedux/operations';
-import { selectContacts,selectCustomerName} from '../../redux/AppRedux/selectors';
+import {
+  searchPlaces,
+  saveCategoryName,
+  saveCountryName,
+} from '../../redux/AppRedux/operations';
+import {selectCategoryName, selectCountryName} from '../../redux/AppRedux/selectors';
 import css from './ContactForm.module.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
-import Notiflix from 'notiflix';
-import { useState } from 'react';
-import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
+import Categories from '../Options/categories';
+import Countries from '../Options/countries_sorted_by_full_name';
 
-export const ContactForm = ({ children }) => {
-  const contactNameId = nanoid();
-  const contactNumberId = nanoid();
-  const contacts = useSelector(selectContacts);
+export const ContactForm = ({lowerLimitSetter, upperLimitSetter, children }) => {
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date());
-  const customerName = useSelector(selectCustomerName);
+  const categoryName = useSelector(selectCategoryName);
+  const countryName = useSelector(selectCountryName);
 
   const handleButtonPress = evt => {
     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -27,100 +26,86 @@ export const ContactForm = ({ children }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const currentName = event.target[0].value;
+    const category = event.target[0].value;
+    const country = event.target[1].value;
 
-    /*const isNameDuplicate = contacts.some(
-      contact =>
-        contact.name.trim().toLowerCase() === currentName.trim().toLowerCase()
-    );
-    if (isNameDuplicate) {
-      Notiflix.Notify.warning('This name already exists');
-      return;
-    }*/
-
-    if (currentName.trim() === "") {
- Notiflix.Notify.warning('Empty spaces are not allowed');
-      return;
-    }
-
-    const exactDate = new Date();
-    if (date <= exactDate) {
-      Notiflix.Notify.failure('Invalid date, choose a date or time in the future');
-    }
-
-    else {
-      dispatch(addContact({ name: event.target[0].value, dueDate: date }));
-    }
-    //console.log({ name: event.target[0].value, phone: event.target[1].value });
-     //event.target.reset();
+    
+    dispatch(searchPlaces({ category: category, country: country }));
+    
+    lowerLimitSetter(0);
+    upperLimitSetter(4);
+    
   };
 
-  const handleChange = (evt) => {
-    const wrd = evt.target.value
-    let hasExceeded = false;
-    let nameRay;
-    if (wrd.length > 30) {
-      nameRay = [...wrd];
-      nameRay.pop()
-      evt.target.value = nameRay.join("");
-      hasExceeded = true;
-    }
-    if ((hasExceeded === true)) {
-      Notiflix.Notify.warning('Maximum Charater limit is 30');
-    }
-    dispatch(saveCustomerName(evt.target.value));
+  const handleCategoryChange = (evt) => {
+    
+    dispatch(saveCategoryName(evt.target.value));
   }
+
+   const handleCountryChange = evt => {
+    
+     dispatch(saveCountryName(evt.target.value));
+   };
 
   return (
     <div className={css.taskBook}>
-      <h2 className={css.formTitle}>Scheduler</h2>
+      <h2 className={css.formTitle}>Pet Services</h2>
       <form onSubmit={handleSubmit} className={css.formSection}>
         <label className={css.loginLabel}>
-          <span className={css.formLabel}>Customer Name:</span>
-          <input
-            type="text"
-            placeholder="Enter Customer Name"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Enter Customer Name"
-            required
-            autoComplete="off"
-            id={contactNameId}
+          <span className={css.formLabel}>Categories:</span>
+          <select
             className={css.formInput}
-            onChange={handleChange}
-            value={customerName}
-          />
+            onChange={handleCategoryChange}
+            value={categoryName}
+            name="categoryName"
+            required
+            title="Choose a Category"
+          >
+            <option
+              value=""
+              disabled
+              selected
+              style={{
+                fontFamily: 'Work Sans',
+                fontWeight: 700,
+                backgroundColor: 'grey',
+                color: 'black',
+              }}
+            >
+              Choose a category of pet service
+            </option>
+            {Categories.map(categorie => (
+              <option value={categorie}>{categorie}</option>
+            ))}
+          </select>
         </label>
         <label>
-          <span className={css.formLabel}>Due date:</span>
-
-          <Flatpickr
-            data-enable-time
-            value={date}
-            onChange={selectedDates => {
-              const nowDate = new Date();
-              if (selectedDates[0] <= nowDate) {
-                Notiflix.Notify.warning('Choose a date in the future');
-              } else {
-                Notiflix.Notify.success('Due Date Selected');
-              }
-              setDate(selectedDates[0]);
-            }}
-            options={{
-              minuteIncrement: 1, // Set minute increments to 1
-            }}
-            render={({ defaultValue, ...props }, ref) => (
-              <input
-                {...props}
-                ref={ref}
-                className={css.formInput}
-                required
-                id={contactNumberId}
-                name="myDate"
-                title="Enter Due Date"
-              />
-            )}
-          />
+          <span className={css.formLabel}>Country:</span>
+          <select
+            className={css.formInput}
+            onChange={handleCountryChange}
+            value={countryName}
+            name="countryName"
+            required
+            title="Choose a Country"
+          >
+            <option
+              value=""
+              disabled
+              selected
+              style={{
+                fontFamily: 'Work Sans',
+                fontWeight: 700,
+                backgroundColor: 'grey',
+                color: 'black',
+              }}
+            >
+              Choose a country
+            </option>
+            {Countries.map(country => (
+              <option value={country.country}>{country.full_name}</option>
+            ))}
+          </select>
         </label>
         <div className={css.buttonArea}>
           <button
@@ -129,7 +114,7 @@ export const ContactForm = ({ children }) => {
             className={css.button}
             onClick={handleButtonPress}
           >
-            Add
+            Search
           </button>
         </div>
       </form>

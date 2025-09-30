@@ -8,6 +8,7 @@ import { RestrictedRouteRegister } from '../RestrictedRouteRegister/RestrictedRo
 import { RestrictedRouteLogin } from '../RestrictedRouteLogin/RestrictedRouteLogin';
 import { RestrictedRouteNav } from '../RestrictedRouteNav/RestrictedRouteNav';
 import { refreshUser, getUser, logOut } from '../../redux/AuthRedux/operations';
+import { retrieveApiKey } from '../../redux/AppRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthHook } from '../../customHook/customHook'
 import { jwtDecode } from 'jwt-decode';
@@ -57,7 +58,7 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(refreshUser());
-    //dispatch(getUser());
+    dispatch(retrieveApiKey());
   }, [dispatch]);
   return isRefreshing ? (
     <div>

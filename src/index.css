@@ -13,7 +13,7 @@ body {
 /*background-color:  #330d5a;*/
 /*background-color:  #280a46;*/
 /*background-color:  #1c0631;*/
-background: rgba(40, 10, 70, 0.6) url(./ChatGPT\ Image\ Jul\ 12\,\ 2025\,\ 02_08_23\ AM.png); /* #280a46 with 60% opacity */
+background: rgba(40, 10, 70, 0.6) url(./background.png); /* #280a46 with 60% opacity */
 background-blend-mode: overlay; /* Optional: blends the color with the image */
     background-position: center;
     background-repeat: no-repeat;

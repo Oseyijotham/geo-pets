@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   fetchContacts,
-  addContact,
+  searchPlaces,
   deleteContact,
   openModal,
   closeModal,
@@ -54,7 +54,11 @@ import {
   closeCompletedMobileAndTabModal,
   openPastDueMobileAndTabModal,
   closePastDueMobileAndTabModal,
-  saveCustomerName,
+  saveCategoryName,
+  saveCountryName,
+  createApiKey,
+  retrieveApiKey,
+  fetchCatPics,
 } from './operations';
 
 const handlePending = state => {
@@ -81,8 +85,9 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
     contacts: {
-      items: [],
+      places: [],
       isLoading: false,
+      isUpdateLoading: false,
       isKeyLoading: false,
       error: null,
       openMyModal: false,
@@ -96,11 +101,11 @@ const contactsSlice = createSlice({
       openMyCompletedModal: false,
       openMyPastDueModal: false,
       selectedContact: {
-        name: null,
-        email: null,
-        dueDate: null,
-        avatarURL: null,
-        groups: null,
+        properties: {
+          names: { primary: null },
+          addresses: [{}],
+          socials: [],
+        },
       },
       selectedSortedAllContact: {
         name: null,
@@ -134,11 +139,26 @@ const contactsSlice = createSlice({
       isSlideError: false,
       filterUpLimit: 4,
       filterDownLimit: 0,
-      customerName:null,
+      categoryName: null,
+      countryName: null,
+      key: null,
+      keyName: null,
+      keyId: null,
+      keyDate: null
     },
   },
   extraReducers: builder => {
     builder
+      .addCase(retrieveApiKey.pending, handlePending)
+      .addCase(retrieveApiKey.fulfilled, (state, action) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = null;
+        state.contacts.key = action.payload.apiKey;
+        state.contacts.keyName = action.payload.apiKeyName;
+        state.contacts.keyId = action.payload.apiAccountId;
+        state.contacts.keyDate = action.payload.apiCreationDate;
+      })
+      .addCase(retrieveApiKey.rejected, handleRejected)
       .addCase(fetchContacts.pending, handlePending)
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
@@ -147,23 +167,15 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchContacts.rejected, handleRejected)
 
-      .addCase(addContact.pending, handlePending)
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(searchPlaces.pending, handlePending)
+      .addCase(searchPlaces.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
         state.contacts.error = null;
-        state.contacts.items = action.payload;
-        //console.log(action.payload);
-        //myContacts.push(action.payload);
+        state.contacts.places = action.payload;
       })
-      .addCase(addContact.rejected, handleRejected)
+      .addCase(searchPlaces.rejected, handleRejected)
       .addCase(deleteContact.pending, handlePending)
       .addCase(deleteContact.fulfilled, (state, action) => {
-        /*state.contacts.isLoading = false;
-        state.contacts.error = null;
-        const index = state.contacts.items.findIndex(
-          item => item._id === action.payload
-        );
-        state.contacts.items.splice(index, 1);*/
         state.contacts.isLoading = false;
         state.contacts.items = action.payload;
       })
@@ -211,12 +223,6 @@ const contactsSlice = createSlice({
         //state.contacts.selectedContact = {};
       })
 
-      /*.addCase(fetchContactById.fulfilled, (state, action) => {
-        const myContact = myContacts.find(contact => {
-          return contact._id === action.payload;
-        });
-        state.contacts.selectedContact = myContact;
-      });*/
       .addCase(fetchContactById.pending, state => {
         state.contacts.isSlideLoading = true;
         state.contacts.selectedContact.avatarURL = null;
@@ -993,13 +999,40 @@ const contactsSlice = createSlice({
       })
       .addCase(updateSortedPastDueContactPhone.rejected, handleRejected)
 
-      .addCase(updateStatus.pending, handlePending)
-      .addCase(updateStatus.fulfilled, (state, action) => {
-        state.contacts.items = action.payload;
-        state.contacts.isLoading = false;
-        //state.token = action.payload.token;
+      .addCase(updateStatus.pending, state => {
+        state.contacts.isUpdateLoading = true;
       })
-      .addCase(updateStatus.rejected, handleRejected)
+      .addCase(updateStatus.fulfilled, (state, action) => {
+        state.contacts.places = state.contacts.places.map(place => {
+          if (
+            place.id === action.payload.data.id &&
+            action.payload.data.status === true
+          ) {
+            // Return new object with updated status
+            return {
+              ...place,
+              status: true,
+            };
+          }
+
+          if (
+            place.id === action.payload.data.id &&
+            action.payload.data.status === false
+          ) {
+            // Return new object with updated status
+            return {
+              ...place,
+              status: false,
+            };
+          }
+          // Return original place for non-matches
+          return place;
+        });
+        state.contacts.isUpdateLoading = false;
+      })
+      .addCase(updateStatus.rejected, state => {
+        state.contacts.isUpdateLoading = false;
+      })
 
       .addCase(openMobileAndTabModal.fulfilled, (state, action) => {
         state.contacts.openMyMobileAndTabModal = action.payload;
@@ -1040,10 +1073,24 @@ const contactsSlice = createSlice({
       .addCase(closePastDueMobileAndTabModal.fulfilled, (state, action) => {
         state.contacts.openMyPastDueMobileAndTabModal = action.payload;
       })
-    
-      .addCase(saveCustomerName.fulfilled, (state, action) => {
-        state.contacts.customerName = action.payload;
-      });
+
+      .addCase(saveCategoryName.fulfilled, (state, action) => {
+        state.contacts.categoryName = action.payload;
+      })
+
+      .addCase(saveCountryName.fulfilled, (state, action) => {
+        state.contacts.countryName = action.payload;
+      })
+      .addCase(createApiKey.pending, handlePending)
+      .addCase(createApiKey.fulfilled, (state, action) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = null;
+        state.contacts.key = action.payload.key;
+        state.contacts.keyName = action.payload.apiKeyName;
+        state.contacts.keyId = action.payload.apiAccountId;
+        state.contacts.keyDate = action.payload.apiCreationDate;
+      })
+      .addCase(createApiKey.rejected, handleRejected);
   },
 });
 

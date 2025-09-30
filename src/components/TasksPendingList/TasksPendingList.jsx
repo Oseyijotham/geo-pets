@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { selectContacts } from '../../redux/AppRedux/selectors';
+import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
   selectFilterUp,
@@ -22,7 +22,7 @@ import {
 } from '../../redux/AppRedux/operations';
 import css from './TasksPendingList.module.css';
 export const TasksPendingList = ({ children }) => {
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectPlaces);
   const filterUp = useSelector(selectFilterUp);
   const filterDown = useSelector(selectFilterDown);
   const isLoading = useSelector(selectIsLoading);

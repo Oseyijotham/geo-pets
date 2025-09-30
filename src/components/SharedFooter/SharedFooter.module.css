@@ -14,8 +14,8 @@
     font-weight: 700;
     padding: 3px;
     color: #fff;
-    border-top: 1px solid rgba(255, 255, 255, 0.09);;
-    /*border-top: 1px solid #fff;*/
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    margin-top: 5px;
 }
 
 .start{

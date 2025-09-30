@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
   flex-grow: 1;
-  
+  position: relative;
 `;
+
 
 
 export const Header = styled.header`
@@ -30,6 +31,7 @@ export const Header = styled.header`
     font-size: 13px;
     gap: 5px;
     width: 150px;
+    text-align: center;
   }
 
   @media (min-width: 768px) {
@@ -43,6 +45,7 @@ export const Link = styled(NavLink)`
   padding: 8px 12px;
   border-radius: 4px;
   text-decoration: none;
+  text-align: center;
   color: #fff;
   font-weight: 700;
   position: relative;

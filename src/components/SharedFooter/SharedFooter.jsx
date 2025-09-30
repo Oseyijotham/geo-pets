@@ -29,9 +29,9 @@ export const SharedFooter = () => {
         <Outlet />
       </Suspense>
       <div className={css.footer}>
-        © 2025 - <span className={css.start}>Airbox</span>
+        © 2025 - <span className={css.start}>Geo</span>
         <span className={css.end}>
-          <i>ify</i>
+          <i>Pets</i>
         </span>
       </div>
     </>

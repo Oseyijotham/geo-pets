@@ -1,3 +1,34 @@
+.centerStyle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  padding: 10px;
+}
+
+.centerLabel{
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+}
+
+.backDrop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .contactsSection {
   display: flex;
   flex-direction: column;
@@ -64,10 +95,10 @@
   border: 2px solid #fff;
   padding: 5px;
   border-radius: 10px;
-  text-align: start;
   font-family: 'Work Sans', sans-serif;
   font-weight: 700;
-  width: 120px;
+  max-width: 190px;
+  max-height: 28.94px;
   overflow: hidden;
 }
 
@@ -79,13 +110,8 @@ font-size: 13px;
 
 @media (min-width: 768px) {
   .contactsPhone{
-  width: 350px;
-}
-}
-
-@media (min-width: 1280px) {
-  .contactsPhone{
-    width: 100%;
+     max-width: 300px;
+     max-height: 32px;
   }
 }
 
@@ -134,15 +160,13 @@ background-image: linear-gradient(to top left, #ffb800, #9225ff);
 
 
 .contactsButtonArea{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap:5px;
+
 }
 
 .contactsButton{
-    padding: 3px;
-  border-radius: 10px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   text-align: center;
   font-family: 'Work Sans', sans-serif;
   font-weight: 700;
@@ -152,6 +176,9 @@ background-image: linear-gradient(to top left, #ffb800, #9225ff);
     border: 1px solid #fff;
     margin:2px;
     fill:#fff;
+    display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .contactsButton:hover{
@@ -191,6 +218,6 @@ background-image: linear-gradient(to top left, #ffb800, #9225ff);
   border: 3px solid #ffb800;
   border-radius: 30px;
   padding: 10px;
-  height: 200px;
+  height: 300px;
   color: #fff;
 }

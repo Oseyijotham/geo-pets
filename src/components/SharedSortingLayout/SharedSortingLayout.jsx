@@ -8,12 +8,21 @@ import { Suspense } from 'react';
 import {
 setSortAll, setSortPending, setSortFulfilled, setSortPastDue
 } from '../../redux/AuthRedux/operations';
-import { useDispatch } from 'react-redux';
+import { createApiKey } from '../../redux/AppRedux/operations';
+import { useDispatch, useSelector } from 'react-redux';
 import css from './SharedSortingLayout.module.css';
 import { ThreeCircles } from 'react-loader-spinner';
+import { selectKey, selectIsLoading,selectError } from '../../redux/AppRedux/selectors';
 
 export const SharedSortingLayout = () => {
   const dispatch = useDispatch();
+
+  const myKey = useSelector(selectKey);
+
+  const isLoading = useSelector(selectIsLoading);
+
+  const error = useSelector(selectError);
+
   const handleSortAll = () => {
      dispatch(setSortAll());
   }
@@ -29,20 +38,80 @@ export const SharedSortingLayout = () => {
   const handleSortPastDue = () => {
     dispatch(setSortPastDue());
   };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    dispatch(
+      createApiKey({
+        name: form.elements.key.value,
+        customMetaData: form.elements.customMetaData.value,
+        customAccountId: form.elements.customAccountId.value,
+      })
+    );
+  }
+
   return (
     <Container>
+      {myKey === null && (
+        <div className={css.cover}>
+          <div className={css.modal}>
+            <div className={css.modalLabel}>
+              Create an API key to have access to your API maker
+            </div>
+            {isLoading && !error && <b>Generating your API KEY...</b>}
+            {error && !isLoading && <b>Could not Generate Key</b>}
+            <div className={css.formContainer}>
+              <form
+                className={css.form}
+                onSubmit={handleSubmit}
+                autoComplete="off"
+              >
+                <label className={css.label}>
+                  API KEY NAME
+                  <input
+                    type="text"
+                    name="key"
+                    className={css.input}
+                    required
+                  />
+                </label>
+                <label className={css.label}>
+                  Custom Account Id
+                  <input
+                    type="text"
+                    name="customMetaData"
+                    className={css.input}
+                    required
+                  />
+                </label>
+                <label className={css.label}>
+                  Custom Meta Data
+                  <input
+                    type="text"
+                    name="customAccountId"
+                    className={css.input}
+                    required
+                  />
+                </label>
+                <button className={css.modalButton}>CREATE API</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
       <Header>
         <Link to="/sharedLayout/sorting/all" onClick={handleSortAll}>
-          All
+          View Cat Images
         </Link>
         <Link to="/sharedLayout/sorting/pending" onClick={handleSortPending}>
-          Pending
+          View Dog Images
         </Link>
         <Link to="completed" onClick={handleSortFulfilled}>
-          Fulfilled
+          Add Places
         </Link>
         <Link to="past_due" onClick={handleSortPastDue}>
-          Past Due
+          See Documentation
         </Link>
       </Header>
 

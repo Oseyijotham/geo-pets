@@ -139,6 +139,7 @@ export const Linker = styled(NavLink)`
   padding: 8px 12px;
   border-radius: 4px;
   text-decoration: none;
+  text-align:center;
   color: #fff;
   font-weight: 700;
   position: relative;

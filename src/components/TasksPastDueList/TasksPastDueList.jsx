@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { selectContacts } from '../../redux/AppRedux/selectors';
+import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
-  selectFilterUp,
   selectFilterDown,
   selectError,
   selectIsLoading,
@@ -13,47 +12,28 @@ import {
   deleteContact,
   openSortedPastDueModal,
   fetchSortedPastDueContactById,
-  handleFilterFowardUp,
-  handleFilterFowardDown,
-  handleFilterBackwardUp,
-  handleFilterBackwardDown,
   updateStatus,
   openPastDueMobileAndTabModal,
 } from '../../redux/AppRedux/operations';
 import css from './TasksPastDueList.module.css';
 export const TasksPastDueList = ({ children }) => {
-  const contacts = useSelector(selectContacts);
-  const filterUp = useSelector(selectFilterUp);
+  const contacts = useSelector(selectPlaces);
   const filterDown = useSelector(selectFilterDown);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  //const [taskStatus, setTaskStatus] = useState();
-  //let myContacts  
   const dispatch = useDispatch();
   const handleDelete = evt => {
     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 1000);
-    //console.log(evt.target.name);
     dispatch(deleteContact(evt.target.name));
-    /*//dispatch(closeModal());
-    const exist = contacts.find(contact => contact._id === evt.target.name);
-    console.log(contacts);
-    if (exist === undefined) {
-      console.log('gvghi');
-      dispatch(closeModal());
-    }*/
-    
   };
   const filterValue = useSelector(selectContactsFilter);
 
   const handleModalOpen = (evt) => {
     if (evt.target.getAttribute('data-id')) {
-      //console.log('Modal opened!');
-
       const id = evt.currentTarget.getAttribute('data-id');
-      //console.log(id);
       dispatch(fetchSortedPastDueContactById(id));
       dispatch(openSortedPastDueModal());
       dispatch(openPastDueMobileAndTabModal());
@@ -61,6 +41,7 @@ export const TasksPastDueList = ({ children }) => {
   };
   const [lowerLimit, setLowerLimit] = useState(0);
   const [upperLimit, setUpperLimit] = useState(4);
+  const [newRay, setNewRay] = useState([]);
 
 
   const handleForward = (evt) => {
@@ -103,25 +84,18 @@ export const TasksPastDueList = ({ children }) => {
   const handleChange = (evt) => {
     dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
   }
+
   
-   const bestMatches = contacts.filter(
-     contact =>
-       contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
-       filterValue.trim() !== ''
-  );
-  
-  const pastDueRay = contacts.filter(
-    (contact) => {
-      const nowSortDate = new Date();
-      //return contact.status === false;
-      return nowSortDate > new Date(contact.dueDate) && contact.status === false;
-    }
-  );
+  const pastDueRay = newRay.filter(contact => {
+    const nowSortDate = new Date();
+    //return contact.status === false;
+    return nowSortDate > new Date(contact.dueDate) && contact.status === false;
+  });
 
 
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>Past Due</h3>
+      <h3 className={css.contactsTitle}>Documentation</h3>
       {children}
 
       {pastDueRay.length === 0 && (
@@ -130,7 +104,7 @@ export const TasksPastDueList = ({ children }) => {
             <b className={css.notification}>Loading Tasks...</b>
           )}
           {!isLoading && !error && (
-            <b className={css.notification}>No Appointments Here!!!</b>
+            <b className={css.notification}>COMING SOON, STAY TUNED</b>
           )}
           {!isLoading && error && <b className={css.notification}>Error!!!</b>}
         </div>

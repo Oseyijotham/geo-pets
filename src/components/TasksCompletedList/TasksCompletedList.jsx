@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { selectContacts } from '../../redux/AppRedux/selectors';
+import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
-  selectFilterUp,
   selectFilterDown,
   selectError,
   selectIsLoading,
@@ -13,37 +12,22 @@ import {
   deleteContact,
   openSortedCompletedModal,
   fetchSortedCompletedContactById,
-  handleFilterFowardUp,
-  handleFilterFowardDown,
-  handleFilterBackwardUp,
-  handleFilterBackwardDown,
   updateStatus,
   openCompletedMobileAndTabModal,
 } from '../../redux/AppRedux/operations';
 import css from './TasksCompletedList.module.css';
 export const TasksCompletedList = ({ children }) => {
-  const contacts = useSelector(selectContacts);
-  const filterUp = useSelector(selectFilterUp);
+  const contacts = useSelector(selectPlaces);
   const filterDown = useSelector(selectFilterDown);
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
-  //const [taskStatus, setTaskStatus] = useState();
-  //let myContacts  
   const dispatch = useDispatch();
   const handleDelete = evt => {
     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 1000);
-    //console.log(evt.target.name);
     dispatch(deleteContact(evt.target.name));
-    /*//dispatch(closeModal());
-    const exist = contacts.find(contact => contact._id === evt.target.name);
-    console.log(contacts);
-    if (exist === undefined) {
-      console.log('gvghi');
-      dispatch(closeModal());
-    }*/
     
   };
   const filterValue = useSelector(selectContactsFilter);
@@ -61,6 +45,7 @@ export const TasksCompletedList = ({ children }) => {
   };
   const [lowerLimit, setLowerLimit] = useState(0);
   const [upperLimit, setUpperLimit] = useState(4);
+  const [newRay, setNewRay] = useState([]);
 
 
   const handleForward = (evt) => {
@@ -103,21 +88,13 @@ export const TasksCompletedList = ({ children }) => {
   const handleChange = (evt) => {
     dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
   }
+
   
-   const bestMatches = contacts.filter(
-     contact =>
-       contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
-       filterValue.trim() !== ''
-  );
-  
-  const completedMatches = contacts.filter(
-    contact =>
-      contact.status === true
-  );
+  const completedMatches = newRay.filter(contact => contact.status === true);
 
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>Fulfilled</h3>
+      <h3 className={css.contactsTitle}>Saved Places</h3>
       {children}
 
       {completedMatches.length === 0 && (
@@ -126,7 +103,7 @@ export const TasksCompletedList = ({ children }) => {
             <b className={css.notification}>Loading Tasks...</b>
           )}
           {!isLoading && !error && (
-            <b className={css.notification}>No Appointments Here!!!</b>
+            <b className={css.notification}>COMING SOON, STAY TUNED</b>
           )}
           {!isLoading && error && <b className={css.notification}>Error!!!</b>}
         </div>
@@ -136,10 +113,7 @@ export const TasksCompletedList = ({ children }) => {
           {console.log(completedMatches)}
           {completedMatches.map(contact => {
             const myindex = completedMatches.indexOf(contact);
-            if (
-              myindex >= lowerLimit &&
-              myindex < upperLimit 
-            ) {
+            if (myindex >= lowerLimit && myindex < upperLimit) {
               return (
                 <li
                   key={contact._id}

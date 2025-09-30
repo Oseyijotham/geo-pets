@@ -39,23 +39,23 @@ export const fetchContacts = createAsyncThunk(
   }
 );
 
-export const addContact = createAsyncThunk(
-  'contacts/addContact',
-  async ({ name, dueDate }, thunkAPI) => {
+export const searchPlaces = createAsyncThunk(
+  'places/searchPlaces',
+  async ({ category, country }, thunkAPI) => {
     try {
-      const response = await axios.post(`/contacts/`, { name, dueDate });
-      //console.log(response.data);
+      const response = await axios.post(`/places/`, { category, country });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       //console.log(error)
-      
+
       Notiflix.Notify.failure(error.response.data.error.message);
-      
+
       if (error.response.status === 401) {
         thunkAPI.dispatch(logOut());
         Notiflix.Notify.failure('Invalid Session, login again');
-      } 
-      
+      }
+
       return thunkAPI.rejectWithValue(null);
     }
   }
@@ -867,12 +867,13 @@ export const updateSortedPastDueContactPhone = createAsyncThunk(
 
 
 export const fetchContactById = createAsyncThunk(
-  'contacts/fetchById',
+  'places/onePlace',
   async (id, thunkAPI) => {
     try {
-      const response = await axios.get(`/contacts/${id}`);
-      console.log (response.data);
-      return response.data;
+      const state = thunkAPI.getState();
+      const foundPlaces = state.contacts.contacts.places;
+      const myObj = foundPlaces.find(place => place.id === id);
+      return myObj;
     } catch (error) {
       if (error.response.status === 401) {
         thunkAPI.dispatch(logOut());
@@ -956,10 +957,7 @@ export const fetchSortedPastDueContactById = createAsyncThunk(
   }
 );
 
-
-
-
-export const deleteContact = createAsyncThunk(
+/*export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (taskId, thunkAPI) => {
     try {
@@ -996,32 +994,32 @@ export const deleteContact = createAsyncThunk(
       return thunkAPI.rejectWithValue(null);
     }
   }
+);  */
+
+
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (taskId, thunkAPI) => {
+    try {
+     const res = await axios.delete(`/contacts/${taskId}`);
+     
+      
+      return res.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(null);
+    }
+  }
 );          
 
  export const updateStatus = createAsyncThunk(
    'tasks/updateStatus',
-   async ({ status, myUpdateStatusId }, thunkAPI) => {
+   async ({ data }, thunkAPI) => {
      try {
-       await axios.patch(`/contacts/taskupdate/${myUpdateStatusId}`, {
-         status,
+       const res =  await axios.post(`/places/saveplace`, {
+         
+         data
        });
-
-       const res = await axios.get('/contacts');
-       const state = thunkAPI.getState();
-       const isOnPending = state.auth.pending;
-       const isOnFulfilled = state.auth.fulfilled;
-       const isOnScheduler = state.auth.scheduler;
-       const selectedSortedPendingContact = state.contacts.contacts.selectedSortedPendingContact;
-       const selectedSortedCompletedContact = state.contacts.contacts.selectedSortedCompletedContact;
-        if (status === true && isOnPending === true && isOnScheduler === false) {
-          thunkAPI.dispatch(closeSortedPendingModal());
-          Notiflix.Notify.success('Appointment moved to Fulfilled Tab');
-        }
-       
-       if (status === false && isOnFulfilled === true && isOnScheduler === false) {
-         thunkAPI.dispatch(closeSortedCompletedModal());
-         Notiflix.Notify.success('Appointment moved to Pending Tab');
-       }
+       console.log(res.data);
        
        return res.data;
      } catch (e) {
@@ -1030,9 +1028,59 @@ export const deleteContact = createAsyncThunk(
    }
 );    
  
-export const saveCustomerName = createAsyncThunk(
-  'customer/save',
+export const saveCategoryName = createAsyncThunk(
+  'category/save',
   async name => {
     return name;
+  }
+);
+
+export const saveCountryName = createAsyncThunk(
+  'country/save',
+  async name => {
+    return name;
+  }
+);
+
+export const createApiKey = createAsyncThunk(
+  'api/createApiKey',
+  async ({ name, customMetaData, customAccountId }, thunkAPI) => {
+    try {
+      const res = await axios.post('users/create', {
+        name,
+        customMetaData,
+        customAccountId,
+      });
+      Notiflix.Notify.success('API KEY CREATED');
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const retrieveApiKey = createAsyncThunk(
+  'api/retrieveKey',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/users/retrieve');
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchCatPics = createAsyncThunk(
+  'api/catPics',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/places/catpics');
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 );

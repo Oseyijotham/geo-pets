@@ -1,16 +1,17 @@
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { selectContacts } from '../../redux/AppRedux/selectors';
+import { ThreeCircles } from 'react-loader-spinner';
+import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
   selectFilterUp,
   selectFilterDown,
   selectError,
   selectIsLoading,
+  selectIsUpdateLoading,
 } from '../../redux/AppRedux/selectors';
 import {
-  deleteContact,
   openModal,
   fetchContactById,
   handleFilterFowardUp,
@@ -22,34 +23,22 @@ import {
 } from '../../redux/AppRedux/operations';
 import css from './ContactList.module.css';
 import PropTypes from 'prop-types';
-import Notiflix from 'notiflix';
-import svg from '../SharedLayout/icons.svg';
+import { useRef } from 'react';
+import icons from './icons.svg';
 
-export const ContactList = ({ children }) => {
-  const contacts = useSelector(selectContacts);
+
+
+export const ContactList = ({lowerLimitProp, upperLimitProp, lowerLimitSetter, upperLimitSetter, children }) => {
+  const sectionRef = useRef(null);
+  const places = useSelector(selectPlaces);
   const filterUp = useSelector(selectFilterUp);
   const filterDown = useSelector(selectFilterDown);
   const isLoading = useSelector(selectIsLoading);
+  const isUpdateLoading = useSelector(selectIsUpdateLoading);
   const error = useSelector(selectError);
   const [taskStatus, setTaskStatus] = useState();
   //let myContacts  
   const dispatch = useDispatch();
-  const handleDelete = evt => {
-    evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
-    setTimeout(() => {
-      evt.target.style.boxShadow = 'none';
-    }, 1000);
-    //console.log(evt.target.name);
-    dispatch(deleteContact(evt.target.name));
-    /*//dispatch(closeModal());
-    const exist = contacts.find(contact => contact._id === evt.target.name);
-    console.log(contacts);
-    if (exist === undefined) {
-      console.log('gvghi');
-      dispatch(closeModal());
-    }*/
-    
-  };
   const filterValue = useSelector(selectContactsFilter);
 
   const handleModalOpen = (evt) => {
@@ -63,8 +52,7 @@ export const ContactList = ({ children }) => {
       dispatch(openMobileAndTabModal());
     }
   };
-  const [lowerLimit, setLowerLimit] = useState(0);
-  const [upperLimit, setUpperLimit] = useState(4);
+  
 
 
   const handleForward = (evt) => {
@@ -72,10 +60,11 @@ export const ContactList = ({ children }) => {
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 500);
+    sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     //let fwdWar = lowerLimit + 4;
     if (filterValue === "") {
-      setLowerLimit(lowerLimit + 4);
-      setUpperLimit(upperLimit + 4);
+      lowerLimitSetter(lowerLimitProp + 4);
+      upperLimitSetter(upperLimitProp + 4);
     }
     if (filterValue !== "") {
       console.log("OK")
@@ -90,11 +79,13 @@ export const ContactList = ({ children }) => {
      evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
      setTimeout(() => {
        evt.target.style.boxShadow = 'none';
-     }, 500);
+       sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+     }, 80);
+    
     //let fwdWar = lowerLimit + 4;
     if (filterValue === "") {
-      setLowerLimit(lowerLimit - 4);
-      setUpperLimit(upperLimit - 4);
+      lowerLimitSetter(lowerLimitProp - 4);
+      upperLimitSetter(upperLimitProp - 4);
     }
     if (filterValue !== '') {
       const str1 = filterUp;
@@ -104,91 +95,136 @@ export const ContactList = ({ children }) => {
      }
   };
   
-  const handleChange = (evt) => {
-    dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
+  const handleChange = (placesData, evt) => {
+
+    dispatch(updateStatus({ data: { ...placesData, status: evt.target.checked } }));
   }
   
-   const bestMatches = contacts.filter(
-     contact =>
-       contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
+   const bestMatches = places.filter(
+     place =>
+       place.properties.names.primary.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
        filterValue.trim() !== ''
   );
   
-  useEffect(()=>{},[contacts])
+  
+
 
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>Appointments / Booking List</h3>
+      <h3 className={css.contactsTitle}>Places List</h3>
       {children}
-      {filterValue === '' && contacts.length !== 0 && (
-        <ul
-          className={css.contactsList}
-          style={{
-            height: `${
-              contacts.length >= 4 ? '296px' : "auto" 
-            }`,
-          }}
-        >
-          {contacts.map(contact => {
-            const myindex = contacts.indexOf(contact);
-            if (myindex >= lowerLimit && myindex < upperLimit) {
-              return (
-                <li
-                  key={contact._id}
-                  data-id={contact._id}
-                  className={css.contactsItem}
-                  onClick={handleModalOpen}
-                >
-                  <span className={css.contactsData} data-id={contact._id}>
-                    <input
-                      type="checkbox"
-                      className={css.checkbox}
-                      checked={contact.status}
-                      name={contact._id}
-                      onChange={handleChange}
-                    />
-                    :{' '}
-                    <span className={css.contactsPhone} data-id={contact._id}>
-                      {contact.name}
+      <div style={{ position: 'relative' }}>
+        {console.log(isUpdateLoading)}
+        {(isLoading ||
+          isUpdateLoading) && (
+            <div className={css.backDrop}>
+              <div className={css.centerStyle}>
+                <ThreeCircles
+                  visible={true}
+                  height="60"
+                  width="60"
+                  color="#9225ff"
+                  radius="9"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClass={css.loader}
+                />
+                {isLoading && (
+                  <p className={css.centerLabel}>
+                    Please be patient, fetching places can take up to 60 seconds
+                  </p>
+                )}
+                {isUpdateLoading && (
+                  <p className={css.centerLabel}>
+                    Saving place to your API Database
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+        {filterValue === '' && places.length !== 0 && (
+          <ul className={css.contactsList} style={{ height: '315px' }}>
+            {places.map(place => {
+              const myindex = places.indexOf(place);
+              if (myindex >= lowerLimitProp && myindex < upperLimitProp) {
+                return (
+                  <li
+                    key={place.id}
+                    data-id={place.id}
+                    className={css.contactsItem}
+                    onClick={handleModalOpen}
+                  >
+                    <span className={css.contactsData} data-id={place.id}>
+                      <input
+                        type="checkbox"
+                        className={css.checkbox}
+                        onChange={evt => handleChange(place, evt)}
+                        name={place.id}
+                        checked={place.status}
+                        value={place.properties.addresses[0]}
+                      />
+                      :{' '}
+                      <span className={css.contactsPhone} data-id={place.id}>
+                        {place.properties.names.primary}
+                      </span>
                     </span>
-                  </span>
-                  <span className={css.contactsButtonArea}>
-                    <button
-                      type="submit"
-                      className={css.contactsButton}
-                      name={contact._id}
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </li>
-              );
-            }
-          })}
-        </ul>
-      )}
-      {contacts.length === 0 && (
-        <div className={css.contactsListAlt}>
-          {isLoading && !error && (
-            <b className={css.notification}>Loading Tasks...</b>
-          )}
-          {!isLoading && !error && (
-            <b className={css.notification}>No Appointments Here!!!</b>
-          )}
-          {!isLoading && error && <b className={css.notification}>Error!!!</b>}
-        </div>
-      )}
+                    {place.properties.socials.length !== 0 && (
+                      <span className={css.contactsButtonArea}>
+                        <a
+                          className={css.contactsButton}
+                          name={place.id}
+                          href={place.properties.socials[0]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            className={css.socialsIcon}
+                          >
+                            <use href={`${icons}#icon-facebook`} />
+                          </svg>
+                        </a>
+                      </span>
+                    )}
+                  </li>
+                );
+              }
+            })}
+          </ul>
+        )}
+        {places.length === 0 && (
+          <div className={css.contactsListAlt}>
+            {isLoading && !error && (
+              <b className={css.notification}>Fetching Places...</b>
+            )}
+            {!isLoading && !error && (
+              <b className={css.notification}>No Places Found!!!</b>
+            )}
+            {!isLoading && error && (
+              <b className={css.notification}>Error!!!</b>
+            )}
+          </div>
+        )}
+      </div>
       {filterValue === '' && (
         <div className={css.navigationArea}>
-          {lowerLimit !== 0 && (
-            <button className={css.navigationButton} onClick={handleBackward}>
+          {lowerLimitProp !== 0 && (
+            <button
+              className={css.navigationButton}
+              ref={sectionRef}
+              onClick={handleBackward}
+            >
               Prev
             </button>
           )}
-          {!(upperLimit > contacts.length) &&
-            upperLimit !== contacts.length && (
-              <button className={css.navigationButton} onClick={handleForward}>
+          {!(upperLimitProp > places.length) &&
+            upperLimitProp !== places.length && (
+              <button
+                className={css.navigationButton}
+                ref={sectionRef}
+                onClick={handleForward}
+              >
                 Forward
               </button>
             )}
@@ -197,13 +233,21 @@ export const ContactList = ({ children }) => {
       {filterValue !== '' && (
         <div className={css.navigationArea}>
           {filterDown !== 0 && (
-            <button className={css.navigationButton} onClick={handleBackward}>
+            <button
+              className={css.navigationButton}
+              ref={sectionRef}
+              onClick={handleBackward}
+            >
               Prev
             </button>
           )}
           {!(filterUp > bestMatches.length) &&
             filterUp !== bestMatches.length && (
-              <button className={css.navigationButton} onClick={handleForward}>
+              <button
+                className={css.navigationButton}
+                ref={sectionRef}
+                onClick={handleForward}
+              >
                 Forward
               </button>
             )}

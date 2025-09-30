@@ -1,8 +1,10 @@
-export const selectContacts = state => state.contacts.contacts.items;
+export const selectPlaces = state => state.contacts.contacts.places;
 
 export const selectContactsFilter = state => state.filter;
 
 export const selectIsLoading = state => state.contacts.contacts.isLoading;
+
+export const selectIsUpdateLoading = state => state.contacts.contacts.isUpdateLoading;
 
 export const selectIsKeyLoading = state => state.contacts.contacts.isKeyLoading;
 
@@ -36,7 +38,9 @@ export const selectFilterUp = state => state.contacts.contacts.filterUpLimit;
 
 export const selectFilterDown = state => state.contacts.contacts.filterDownLimit;
 
-export const selectCustomerName = state => state.contacts.contacts.customerName;
+export const selectCategoryName = state => state.contacts.contacts.categoryName;
+
+export const selectCountryName = state => state.contacts.contacts.countryName;
 
 export const selectOpenMobileAndTabModal = state => state.contacts.contacts.openMyMobileAndTabModal;
 
@@ -47,3 +51,11 @@ export const selectOpenPendingMobileAndTabModal = state => state.contacts.contac
 export const selectOpenCompletedMobileAndTabModal = state => state.contacts.contacts.openMyCompletedMobileAndTabModal;
 
 export const selectOpenPastDueMobileAndTabModal = state => state.contacts.contacts.openMyPastDueMobileAndTabModal;
+
+export const selectKey = state => state.contacts.contacts.key;
+
+export const selectKeyName = state => state.contacts.contacts.keyName;
+
+export const selectKeyId = state => state.contacts.contacts.keyId;
+
+export const selectKeyDate = state => state.contacts.contacts.keyDate;

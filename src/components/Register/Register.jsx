@@ -3,7 +3,7 @@ import { register } from '../../redux/AuthRedux/operations';
 import css from './Register.module.css';
 import { NavLink } from 'react-router-dom';
 import Notiflix from 'notiflix';
-import logoImage from './Airboxify.png';
+import logoImage from './GeoPets.png';
 
 export const Register = () => {
 const dispatch = useDispatch();
@@ -95,9 +95,9 @@ const handleSubmit = e => {
                 />
               </div>
               <div className={css.iconLabelWrapper}>
-                <span className={css.iconLabelStart}>Airbox</span>
+                <span className={css.iconLabelStart}>Geo</span>
                 <span className={css.iconLabelEnd}>
-                  <i>ify</i>
+                  <i>Pets</i>
                 </span>
               </div>
             </div>
