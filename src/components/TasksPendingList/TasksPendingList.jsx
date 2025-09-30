@@ -61,6 +61,7 @@ export const TasksPendingList = ({ children }) => {
   };
   const [lowerLimit, setLowerLimit] = useState(0);
   const [upperLimit, setUpperLimit] = useState(4);
+  const [newRay, setNewRay] = useState([]);
 
 
   const handleForward = (evt) => {
@@ -104,42 +105,30 @@ export const TasksPendingList = ({ children }) => {
     dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
   }
   
-   const bestMatches = contacts.filter(
-     contact =>
-       contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
-       filterValue.trim() !== ''
-  );
   
-  const pendingMatches = contacts.filter(
-    contact =>
-      contact.status===false
-  );
+  
+  const pendingMatches = newRay.filter(contact => contact.status === false);
 
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>Pending</h3>
+      <h3 className={css.contactsTitle}>Dog Pics</h3>
       {children}
       {pendingMatches.length === 0 && (
         <div className={css.contactsListAlt}>
           {isLoading && !error && (
-            <b className={css.notification}>Loading Tasks...</b>
+            <b className={css.notification}>Loading Dog Pics...</b>
           )}
           {!isLoading && !error && (
-            <b className={css.notification}>No Appointments Here!!!</b>
+            <b className={css.notification}>COMING SOON, STAY TUNED</b>
           )}
-          {!isLoading && error && (
-            <b className={css.notification}>Error!!!</b>
-          )}
+          {!isLoading && error && <b className={css.notification}>Error!!!</b>}
         </div>
       )}
       {pendingMatches.length !== 0 && (
         <ul className={css.contactsList}>
           {pendingMatches.map(contact => {
             const myindex = pendingMatches.indexOf(contact);
-            if (
-              myindex >= lowerLimit &&
-              myindex < upperLimit 
-            ) {
+            if (myindex >= lowerLimit && myindex < upperLimit) {
               return (
                 <li
                   key={contact._id}

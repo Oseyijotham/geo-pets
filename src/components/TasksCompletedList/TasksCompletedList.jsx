@@ -100,7 +100,7 @@ export const TasksCompletedList = ({ children }) => {
       {completedMatches.length === 0 && (
         <div className={css.contactsListAlt}>
           {isLoading && !error && (
-            <b className={css.notification}>Loading Tasks...</b>
+            <b className={css.notification}>Loading Documentation...</b>
           )}
           {!isLoading && !error && (
             <b className={css.notification}>COMING SOON, STAY TUNED</b>

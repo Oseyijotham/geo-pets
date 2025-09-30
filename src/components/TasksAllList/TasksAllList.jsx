@@ -22,6 +22,7 @@ import {
 } from '../../redux/AppRedux/operations';
 import css from './TasksAllList.module.css';
 export const TasksAllList = ({ children }) => {
+  const [newRay, setNewRay] = useState([]);
   const contacts = useSelector(selectPlaces);
   const filterUp = useSelector(selectFilterUp);
   const filterDown = useSelector(selectFilterDown);
@@ -104,27 +105,20 @@ export const TasksAllList = ({ children }) => {
     dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
   }
   
-   const bestMatches = contacts.filter(
-     contact =>
-       contact.name.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
-       filterValue.trim() !== ''
-   );
 
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>All</h3>
+      <h3 className={css.contactsTitle}>Cat Pics</h3>
       {children}
-      {contacts.length === 0 && (
+      {newRay.length === 0 && (
         <div className={css.contactsListAlt}>
           {isLoading && !error && (
-            <b className={css.notification}>Loading Tasks...</b>
+            <b className={css.notification}>Loading Cat Pics...</b>
           )}
           {!isLoading && !error && (
-            <b className={css.notification}>No Appointments Here!!!</b>
+            <b className={css.notification}>COMING SOON, STAY TUNED</b>
           )}
-          {!isLoading && error && (
-            <b className={css.notification}>Error!!!</b>
-          )}
+          {!isLoading && error && <b className={css.notification}>Error!!!</b>}
         </div>
       )}
       {contacts.length !== 0 && (

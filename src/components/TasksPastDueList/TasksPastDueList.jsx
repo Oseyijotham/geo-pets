@@ -101,7 +101,7 @@ export const TasksPastDueList = ({ children }) => {
       {pastDueRay.length === 0 && (
         <div className={css.contactsListAlt}>
           {isLoading && !error && (
-            <b className={css.notification}>Loading Tasks...</b>
+            <b className={css.notification}>Loading Saved Places...</b>
           )}
           {!isLoading && !error && (
             <b className={css.notification}>COMING SOON, STAY TUNED</b>
