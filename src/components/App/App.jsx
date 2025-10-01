@@ -37,24 +37,40 @@ export const App = () => {
   /*By the way the token is null in the initial state so when the user logs in the value of the token changes which triggers the
   useEffect hook below*/
   useEffect(() => {
-    if (token) {
-      
-        const interval = setInterval(() => {
-          const { exp } = jwtDecode(token); // Decode token to get expiry
-          const currentTime = Math.floor(Date.now() / 1000);;
+    if (!token) return;
 
-          if (exp - currentTime <= 120) {
-            Notiflix.Notify.warning('Session timeout');
-            dispatch(logOut()); // Force logout 60 seconds or less before token expires
-            clearInterval(interval); // Cleanup
-          }
-          console.log("check")
-        }, 60 * 1000); // Check every 1 minute
-      
-    
-    
+    const checkTokenExpiry = () => {
+      try {
+        const { exp } = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const timeUntilExpiry = exp - currentTime;
 
-    }
+        // Add buffers for safety
+        const LOGOUT_BUFFER = 60; // Logout 1 minute before
+        const CLOCK_SKEW_BUFFER = 300; // 5 minutes clock difference buffer
+
+        if (timeUntilExpiry <= LOGOUT_BUFFER + CLOCK_SKEW_BUFFER) {
+          Notiflix.Notify.warning('Session expired');
+          dispatch(logOut());
+          return true; // Signal that cleanup happened
+        }
+
+        return false;
+      } catch (error) {
+        console.error('Token check failed:', error);
+        dispatch(logOut());
+        return true;
+      }
+    };
+
+    // Check immediately on mount
+    const shouldCleanup = checkTokenExpiry();
+    if (shouldCleanup) return;
+
+    // Then check every minute
+    const interval = setInterval(checkTokenExpiry, 60 * 1000);
+
+    return () => clearInterval(interval);
   }, [token, dispatch]);
 
   
