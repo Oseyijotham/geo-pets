@@ -1,4 +1,4 @@
-import { useEffect, lazy } from 'react';
+import { useEffect, lazy, useRef } from 'react';
 //import { useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import { SharedLayout } from '../SharedLayout/SharedLayout';
@@ -8,7 +8,7 @@ import { RestrictedRouteRegister } from '../RestrictedRouteRegister/RestrictedRo
 import { RestrictedRouteLogin } from '../RestrictedRouteLogin/RestrictedRouteLogin';
 import { RestrictedRouteNav } from '../RestrictedRouteNav/RestrictedRouteNav';
 import { refreshUser, getUser, logOut } from '../../redux/AuthRedux/operations';
-import { retrieveApiKey } from '../../redux/AppRedux/operations';
+import { retrieveApiKey, fetchCatPics, fetchDogPics } from '../../redux/AppRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthHook } from '../../customHook/customHook'
 import { jwtDecode } from 'jwt-decode';
@@ -31,6 +31,7 @@ const Profile = lazy(() => import('../Profile/Profile'));
 export const App = () => {
   const { token, isRefreshing} = useAuthHook();
   const dispatch = useDispatch();
+  const hasInitialized = useRef(false);
 
   // Effect to check and decode token
   /*By the way the token is null in the initial state so when the user logs in the value of the token changes which triggers the
@@ -56,10 +57,19 @@ export const App = () => {
     }
   }, [token, dispatch]);
 
+  
+
   useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
+    console.log('Initializing...'); // Add this to confirm it runs once
+
     dispatch(refreshUser());
     dispatch(retrieveApiKey());
-  }, [dispatch]);
+    dispatch(fetchCatPics());
+    dispatch(fetchDogPics());
+  }, []);
   return isRefreshing ? (
     <div>
       <ThreeCircles

@@ -1084,3 +1084,16 @@ export const fetchCatPics = createAsyncThunk(
     }
   }
 );
+
+export const fetchDogPics = createAsyncThunk(
+  'api/dogPics',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/places/dogpics');
+      console.log(res.data);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

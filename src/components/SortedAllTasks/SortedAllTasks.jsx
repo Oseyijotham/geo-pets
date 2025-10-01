@@ -1,8 +1,6 @@
 import { TasksAllList } from '../TasksAllList/TasksAllList';
-import { Filter } from '../Filter/Filter';
 import { useEffect } from 'react';
 import {
-  fetchContacts,
   closeSortedAllModal,
   updateSortedAllContactAvatar,
   updateSortedAllContactName,
@@ -27,7 +25,6 @@ import { useState } from 'react';
 import Notiflix from 'notiflix';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
-import { Suspense } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import { useRef } from 'react';
 
@@ -42,11 +39,11 @@ export const Contacts = () => {
   const [emailValue, setEmailValue] = useState(myContact.email);
    const [isPhoneEditing, setPhoneEdit] = useState(false);
    const [dateValue, setDateValue] = useState('');
-  //const [idValue, setIdValue] = useState('');
+
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const isOpenAllMobileAndTabModal = useSelector(selectOpenAllMobileAndTabModal);
-  //const contacts = useSelector(selectContacts);
+  
   const isSlideLoading = useSelector(selectedIsSlideLoading);
  
   const error = useSelector(selectError);
@@ -208,10 +205,6 @@ export const Contacts = () => {
    };
 
   useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  useEffect(() => {
     setEmailValue(myContact.email);
   }, [myContact.email]);
 
@@ -220,15 +213,6 @@ export const Contacts = () => {
    }, [myContact.name]);
   
      useEffect(() => {
-       //setPhoneValue(myContact.phone);
-       /*const date = new Date(myContact.phone);
-
-       const formattedDate = date.toLocaleDateString('en-GB', {
-         year: 'numeric',
-         month: '2-digit',
-         day: '2-digit',
-       });
-       setDateValue(formattedDate)*/
 
        const userLocale = navigator.language; // e.g., "en-US" or "fr-FR"
        const myDate = new Date(myContact.dueDate);
@@ -497,7 +481,7 @@ export const Contacts = () => {
 
       {error && (
         <b className={css.notificationShow}>
-          There was an error, logout and login again!!!
+          There was an error, refresh the page!!!
         </b>
       )}
       <div

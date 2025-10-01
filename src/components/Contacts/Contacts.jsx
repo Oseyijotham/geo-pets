@@ -3,12 +3,7 @@ import { ContactList } from '../ContactList/ContactList';
 import { Filter } from '../Filter/Filter';
 import { useEffect } from 'react';
 import {
-  fetchContacts,
   closeModal,
-  updateContactAvatar,
-  updateContactName,
-  updateContactEmail,
-  updateContactPhone,
   closeMobileAndTabModal
 } from '../../redux/AppRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';

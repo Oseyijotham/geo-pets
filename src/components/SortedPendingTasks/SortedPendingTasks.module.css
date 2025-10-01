@@ -18,14 +18,12 @@
 
 @media screen and (min-width:768px){
 .sortedWrapper{
-  width: 600px;
 }
 }
 
 .coverWrapper{
   display:flex;
   flex-direction: column;
-  align-items: center;
   justify-content:center;
   padding-top: 5px;
   padding-bottom: 5px;

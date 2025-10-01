@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
 
-axios.defaults.baseURL = 'https://geo-pets-backend.onrender.com/api';
+axios.defaults.baseURL = 'http://localhost:8001/api';
 
 //axios.defaults.baseURL = 'https://airboxify-backend.onrender.com/api';
 
@@ -84,6 +84,10 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   }
 });
 
+export const clearData = createAsyncThunk('auth/clear', async (_, thunkAPI) => {
+  return []
+});
+
 
 export const refreshUser = createAsyncThunk(
   'auth/refresh',
@@ -91,6 +95,7 @@ export const refreshUser = createAsyncThunk(
     
     const state = thunkAPI.getState();
     const persistedToken = state.auth.token;
+    
 
     if (persistedToken === null) {
       return thunkAPI.rejectWithValue('Unable to fetch user');

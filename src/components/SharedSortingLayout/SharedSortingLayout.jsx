@@ -12,14 +12,14 @@ import { createApiKey } from '../../redux/AppRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import css from './SharedSortingLayout.module.css';
 import { ThreeCircles } from 'react-loader-spinner';
-import { selectKey, selectIsLoading,selectError } from '../../redux/AppRedux/selectors';
+import { selectKey,selectError,selectIsGenKey } from '../../redux/AppRedux/selectors';
 
 export const SharedSortingLayout = () => {
   const dispatch = useDispatch();
 
   const myKey = useSelector(selectKey);
 
-  const isLoading = useSelector(selectIsLoading);
+  const isGenKey = useSelector(selectIsGenKey);
 
   const error = useSelector(selectError);
 
@@ -59,8 +59,8 @@ export const SharedSortingLayout = () => {
             <div className={css.modalLabel}>
               Create an API key to have access to your API maker
             </div>
-            {isLoading && !error && <b>Generating your API KEY...</b>}
-            {error && !isLoading && <b>Could not Generate Key</b>}
+            {isGenKey && !error && <b>Generating your API KEY...</b>}
+            {error && !isGenKey && <b>Could not Generate Key</b>}
             <div className={css.formContainer}>
               <form
                 className={css.form}

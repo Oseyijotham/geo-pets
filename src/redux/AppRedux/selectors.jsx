@@ -1,8 +1,16 @@
 export const selectPlaces = state => state.contacts.contacts.places;
 
+export const selectCatPics = state => state.contacts.contacts.catPics;
+
+export const selectDogPics = state => state.contacts.contacts.dogPics;
+
 export const selectContactsFilter = state => state.filter;
 
 export const selectIsLoading = state => state.contacts.contacts.isLoading;
+
+export const selectIsCatPicsLoading = state => state.contacts.contacts.isCatPicsLoading;
+
+export const selectIsGenKey = state => state.contacts.contacts.isGenKey;
 
 export const selectIsUpdateLoading = state => state.contacts.contacts.isUpdateLoading;
 

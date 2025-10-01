@@ -59,21 +59,15 @@ import {
   createApiKey,
   retrieveApiKey,
   fetchCatPics,
+  fetchDogPics,
 } from './operations';
+
+import { clearData } from '../AuthRedux/operations';
 
 const handlePending = state => {
   state.contacts.isLoading = true;
 };
 
-/*const handleKeyPending = state => {
-  state.contacts.isKeyLoading = true;
-  state.contacts.error = null;
-};
-
-const handleKeyRejected = (state, action) => {
-  state.contacts.isKeyLoading = false;
-  state.contacts.error = action.payload;
-};*/
 
 const handleRejected = (state, action) => {
   state.contacts.isLoading = false;
@@ -86,9 +80,13 @@ const contactsSlice = createSlice({
   initialState: {
     contacts: {
       places: [],
+      catPics: [],
+      dogPics: [],
       isLoading: false,
       isUpdateLoading: false,
+      isGenKey: false,
       isKeyLoading: false,
+      isCatPicsLoading: false,
       error: null,
       openMyModal: false,
       openMyMobileAndTabModal: true,
@@ -144,11 +142,14 @@ const contactsSlice = createSlice({
       key: null,
       keyName: null,
       keyId: null,
-      keyDate: null
+      keyDate: null,
     },
   },
   extraReducers: builder => {
     builder
+      .addCase(clearData.fulfilled, (state, action) => {
+        state.contacts.catPics = action.payload;
+      })
       .addCase(retrieveApiKey.pending, handlePending)
       .addCase(retrieveApiKey.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
@@ -159,6 +160,27 @@ const contactsSlice = createSlice({
         state.contacts.keyDate = action.payload.apiCreationDate;
       })
       .addCase(retrieveApiKey.rejected, handleRejected)
+      .addCase(fetchCatPics.pending, state => {
+        state.contacts.isCatPicsLoading = true;
+      })
+      .addCase(fetchCatPics.fulfilled, (state, action) => {
+        state.contacts.isCatPicsLoading = false;
+        state.contacts.error = null;
+        state.contacts.catPics = action.payload;
+      })
+      .addCase(fetchCatPics.rejected, state => {
+        state.contacts.isCatPicsLoading = false;
+         state.contacts.error = true;
+      })
+
+      .addCase(fetchDogPics.pending, handlePending)
+      .addCase(fetchDogPics.fulfilled, (state, action) => {
+        state.contacts.isLoading = false;
+        state.contacts.error = null;
+        state.contacts.dogPics = action.payload;
+      })
+      .addCase(fetchDogPics.rejected, handleRejected)
+
       .addCase(fetchContacts.pending, handlePending)
       .addCase(fetchContacts.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
@@ -1081,16 +1103,21 @@ const contactsSlice = createSlice({
       .addCase(saveCountryName.fulfilled, (state, action) => {
         state.contacts.countryName = action.payload;
       })
-      .addCase(createApiKey.pending, handlePending)
+      .addCase(createApiKey.pending, state => {
+        state.contacts.isGenKey = true;
+      })
       .addCase(createApiKey.fulfilled, (state, action) => {
-        state.contacts.isLoading = false;
+        state.contacts.isGenKey = false;
         state.contacts.error = null;
         state.contacts.key = action.payload.key;
         state.contacts.keyName = action.payload.apiKeyName;
         state.contacts.keyId = action.payload.apiAccountId;
         state.contacts.keyDate = action.payload.apiCreationDate;
       })
-      .addCase(createApiKey.rejected, handleRejected);
+      .addCase(createApiKey.rejected, state => {
+        state.contacts.isGenKey = false;
+        state.contacts.error = false;
+      });
   },
 });
 

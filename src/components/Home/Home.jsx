@@ -7,7 +7,7 @@ import {
   selectIsLoading
 } from '../../redux/AppRedux/selectors';
 import { selectUser } from '../../redux/AuthRedux/selectors';
-import { retrieveApiKey, fetchCatPics } from '../../redux/AppRedux/operations';
+import { retrieveApiKey, fetchCatPics, fetchDogPics } from '../../redux/AppRedux/operations';
 import icon from './list2.svg';
 import PetServices from './PetServices.png';
 import API from './API.png';
@@ -37,7 +37,8 @@ export const Home = () => {
 
 useEffect(() => {
   dispatch(retrieveApiKey());
-  dispatch(fetchCatPics());
+  //dispatch(fetchCatPics());
+  dispatch(fetchDogPics());
 }, [dispatch]);
 
   return (
