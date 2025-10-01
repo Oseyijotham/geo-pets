@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/geo-pets/static/css/main.02959baf.css",
-    "main.js": "/geo-pets/static/js/main.67bcd704.js",
+    "main.js": "/geo-pets/static/js/main.a4055f1f.js",
     "static/css/963.ee965a66.chunk.css": "/geo-pets/static/css/963.ee965a66.chunk.css",
     "static/js/963.14da4813.chunk.js": "/geo-pets/static/js/963.14da4813.chunk.js",
     "static/css/359.838a3f75.chunk.css": "/geo-pets/static/css/359.838a3f75.chunk.css",
@@ -42,7 +42,7 @@
     "index.html": "/geo-pets/index.html",
     "static/media/list2.svg": "/geo-pets/static/media/list2.143e2e7e12285cdac47190b8872b6f89.svg",
     "main.02959baf.css.map": "/geo-pets/static/css/main.02959baf.css.map",
-    "main.67bcd704.js.map": "/geo-pets/static/js/main.67bcd704.js.map",
+    "main.a4055f1f.js.map": "/geo-pets/static/js/main.a4055f1f.js.map",
     "963.ee965a66.chunk.css.map": "/geo-pets/static/css/963.ee965a66.chunk.css.map",
     "963.14da4813.chunk.js.map": "/geo-pets/static/js/963.14da4813.chunk.js.map",
     "359.838a3f75.chunk.css.map": "/geo-pets/static/css/359.838a3f75.chunk.css.map",
@@ -71,6 +71,6 @@
   },
   "entrypoints": [
     "static/css/main.02959baf.css",
-    "static/js/main.67bcd704.js"
+    "static/js/main.a4055f1f.js"
   ]
 }
