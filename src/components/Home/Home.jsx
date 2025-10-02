@@ -57,14 +57,15 @@ useEffect(() => {
             </span>
             <span className={css.homeDisplaySlogan}>
               <i>
-                Here at GeoPets we provide you with all pet related information
-                for any country of your choice, from Dog Walkers to Holistic
-                Animal Care we've got you covered.
+                Here at GeoPets we provide you with information on all pet
+                related services and facilities for any country of your choice,
+                from Dog Walkers to Holistic Animal Care we've got you covered.
               </i>
             </span>
             <span className={css.homeDisplaySloganMobile}>
               <i>
-                Here at GeoPets we provide you with all pet related information.
+                Here at GeoPets we provide you with information on all pet
+                related services and facilities.
               </i>
             </span>
           </span>
