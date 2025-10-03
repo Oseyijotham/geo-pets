@@ -38,7 +38,7 @@ export const Home = () => {
 useEffect(() => {
   dispatch(retrieveApiKey());
   //dispatch(fetchCatPics());
-  dispatch(fetchDogPics());
+  //dispatch(fetchDogPics());
 }, [dispatch]);
 
   return (

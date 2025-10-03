@@ -131,7 +131,7 @@ export const SharedLayout = () => {
                     className={css.headerWindowNavLink}
                     onClick={() => {
                       setMenuHide(true);
-                      handleShedular();
+                      //handleShedular();
                     }}
                   >
                     Pet Services

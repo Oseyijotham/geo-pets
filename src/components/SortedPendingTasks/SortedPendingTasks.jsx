@@ -1,7 +1,6 @@
 import { TasksPendingList } from '../TasksPendingList/TasksPendingList';
 import { useEffect } from 'react';
 import {
-  fetchContacts,
   closeSortedPendingModal,
   updateSortedPendingContactAvatar,
   updateSortedPendingContactName,
@@ -202,9 +201,6 @@ export const Contacts = () => {
       setInputKey(Date.now());
    };
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
 
   useEffect(() => {
     setEmailValue(myContact.email);
