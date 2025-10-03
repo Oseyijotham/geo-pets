@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/geo-pets/static/css/main.1c705f8a.css",
-    "main.js": "/geo-pets/static/js/main.e41788ff.js",
+    "main.js": "/geo-pets/static/js/main.1708de58.js",
     "static/css/963.ee965a66.chunk.css": "/geo-pets/static/css/963.ee965a66.chunk.css",
     "static/js/963.14da4813.chunk.js": "/geo-pets/static/js/963.14da4813.chunk.js",
     "static/css/359.838a3f75.chunk.css": "/geo-pets/static/css/359.838a3f75.chunk.css",
@@ -12,9 +12,9 @@
     "static/js/344.c46208f8.chunk.js": "/geo-pets/static/js/344.c46208f8.chunk.js",
     "static/css/461.49c3b54e.chunk.css": "/geo-pets/static/css/461.49c3b54e.chunk.css",
     "static/js/461.fed43aea.chunk.js": "/geo-pets/static/js/461.fed43aea.chunk.js",
-    "static/css/395.73a3f343.chunk.css": "/geo-pets/static/css/395.73a3f343.chunk.css",
+    "static/css/395.67979ce1.chunk.css": "/geo-pets/static/css/395.67979ce1.chunk.css",
     "static/js/395.17743d04.chunk.js": "/geo-pets/static/js/395.17743d04.chunk.js",
-    "static/css/75.f7868d9a.chunk.css": "/geo-pets/static/css/75.f7868d9a.chunk.css",
+    "static/css/75.c0628699.chunk.css": "/geo-pets/static/css/75.c0628699.chunk.css",
     "static/js/75.adb05eb6.chunk.js": "/geo-pets/static/js/75.adb05eb6.chunk.js",
     "static/css/682.49541547.chunk.css": "/geo-pets/static/css/682.49541547.chunk.css",
     "static/js/682.6f7b8e20.chunk.js": "/geo-pets/static/js/682.6f7b8e20.chunk.js",
@@ -27,6 +27,7 @@
     "static/js/120.d58421e0.chunk.js": "/geo-pets/static/js/120.d58421e0.chunk.js",
     "static/css/524.00464720.chunk.css": "/geo-pets/static/css/524.00464720.chunk.css",
     "static/js/524.e15f3fe4.chunk.js": "/geo-pets/static/js/524.e15f3fe4.chunk.js",
+    "static/media/gallery.png": "/geo-pets/static/media/gallery.6752956a187eb42e3505.png",
     "static/media/API.png": "/geo-pets/static/media/API.d2578334076868782eee.png",
     "static/media/Profile.png": "/geo-pets/static/media/Profile.2bb3177cb7689ab0ac82.png",
     "static/media/PetServices.png": "/geo-pets/static/media/PetServices.8f039a10e9ec5ad2c2eb.png",
@@ -42,7 +43,7 @@
     "index.html": "/geo-pets/index.html",
     "static/media/list2.svg": "/geo-pets/static/media/list2.143e2e7e12285cdac47190b8872b6f89.svg",
     "main.1c705f8a.css.map": "/geo-pets/static/css/main.1c705f8a.css.map",
-    "main.e41788ff.js.map": "/geo-pets/static/js/main.e41788ff.js.map",
+    "main.1708de58.js.map": "/geo-pets/static/js/main.1708de58.js.map",
     "963.ee965a66.chunk.css.map": "/geo-pets/static/css/963.ee965a66.chunk.css.map",
     "963.14da4813.chunk.js.map": "/geo-pets/static/js/963.14da4813.chunk.js.map",
     "359.838a3f75.chunk.css.map": "/geo-pets/static/css/359.838a3f75.chunk.css.map",
@@ -53,9 +54,9 @@
     "344.c46208f8.chunk.js.map": "/geo-pets/static/js/344.c46208f8.chunk.js.map",
     "461.49c3b54e.chunk.css.map": "/geo-pets/static/css/461.49c3b54e.chunk.css.map",
     "461.fed43aea.chunk.js.map": "/geo-pets/static/js/461.fed43aea.chunk.js.map",
-    "395.73a3f343.chunk.css.map": "/geo-pets/static/css/395.73a3f343.chunk.css.map",
+    "395.67979ce1.chunk.css.map": "/geo-pets/static/css/395.67979ce1.chunk.css.map",
     "395.17743d04.chunk.js.map": "/geo-pets/static/js/395.17743d04.chunk.js.map",
-    "75.f7868d9a.chunk.css.map": "/geo-pets/static/css/75.f7868d9a.chunk.css.map",
+    "75.c0628699.chunk.css.map": "/geo-pets/static/css/75.c0628699.chunk.css.map",
     "75.adb05eb6.chunk.js.map": "/geo-pets/static/js/75.adb05eb6.chunk.js.map",
     "682.49541547.chunk.css.map": "/geo-pets/static/css/682.49541547.chunk.css.map",
     "682.6f7b8e20.chunk.js.map": "/geo-pets/static/js/682.6f7b8e20.chunk.js.map",
@@ -71,6 +72,6 @@
   },
   "entrypoints": [
     "static/css/main.1c705f8a.css",
-    "static/js/main.e41788ff.js"
+    "static/js/main.1708de58.js"
   ]
 }
