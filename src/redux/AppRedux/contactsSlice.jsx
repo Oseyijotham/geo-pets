@@ -60,6 +60,8 @@ import {
   retrieveApiKey,
   fetchCatPics,
   fetchDogPics,
+  fetchMoreCatPics,
+  fetchMoreDogPics
 } from './operations';
 
 import { clearData } from '../AuthRedux/operations';
@@ -82,11 +84,14 @@ const contactsSlice = createSlice({
       places: [],
       catPics: [],
       dogPics: [],
+      catPageNums: 0,
+      dogPageNums: 0,
       isLoading: false,
       isUpdateLoading: false,
       isGenKey: false,
       isKeyLoading: false,
       isCatPicsLoading: false,
+      isDogPicsLoading: false,
       error: null,
       openMyModal: false,
       openMyMobileAndTabModal: true,
@@ -170,7 +175,35 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchCatPics.rejected, state => {
         state.contacts.isCatPicsLoading = false;
-         state.contacts.error = true;
+        state.contacts.error = true;
+      })
+
+      .addCase(fetchMoreCatPics.pending, state => {
+        state.contacts.isCatPicsLoading = true;
+      })
+      .addCase(fetchMoreCatPics.fulfilled, (state, action) => {
+        state.contacts.isCatPicsLoading = false;
+        state.contacts.error = null;
+        state.contacts.catPics = action.payload.moreCatPics;
+        state.contacts.catPageNums = action.payload.newPageNum;
+      })
+      .addCase(fetchMoreCatPics.rejected, state => {
+        state.contacts.isCatPicsLoading = false;
+        state.contacts.error = true;
+      })
+
+      .addCase(fetchMoreDogPics.pending, state => {
+        state.contacts.isDogPicsLoading = true;
+      })
+      .addCase(fetchMoreDogPics.fulfilled, (state, action) => {
+        state.contacts.isDogPicsLoading = false;
+        state.contacts.error = null;
+        state.contacts.dogPics = action.payload.moreDogPics;
+        state.contacts.dogPageNums = action.payload.newPageNum;
+      })
+      .addCase(fetchMoreDogPics.rejected, state => {
+        state.contacts.isDogPicsLoading = false;
+        state.contacts.error = true;
       })
 
       .addCase(fetchDogPics.pending, handlePending)

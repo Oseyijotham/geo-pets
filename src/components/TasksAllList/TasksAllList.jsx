@@ -8,8 +8,9 @@ import {
   selectError,
   selectIsLoading,
   selectCatPics,
+  selectCatPageNums,
 } from '../../redux/AppRedux/selectors';
-import {fetchCatPics} from '../../redux/AppRedux/operations';
+import {fetchMoreCatPics, fetchCatPics} from '../../redux/AppRedux/operations';
 import css from './TasksAllList.module.css';
 import { Loader } from '../Loader/Loader';
 
@@ -17,9 +18,17 @@ export const TasksAllList = ({ children }) => {
 
   const isLoading = useSelector(selectIsLoading);
   const catPics = useSelector(selectCatPics);
+  const catPageNums = useSelector(selectCatPageNums);
   const error = useSelector(selectError);
   
   const dispatch = useDispatch();
+
+  const handleGalleryButtonPress = () => {
+    console.log(catPageNums);
+    const storeVar = catPageNums + 1;
+
+    dispatch(fetchMoreCatPics({ pageNum: storeVar }));
+  }
 
   useEffect(() => {
     const lightbox = new SimpleLightbox('.gallery a', {
@@ -34,6 +43,12 @@ export const TasksAllList = ({ children }) => {
       lightbox.destroy();
     };
   }, [catPics]);
+
+  useEffect(() => {
+    if(catPics.length === 0){
+      dispatch(fetchCatPics());
+    }
+  },[])
 
   return (
     <div className={css.contactsSection}>
@@ -52,7 +67,9 @@ export const TasksAllList = ({ children }) => {
           style={{
             height: `
     ${catPics.length === 0 ? '600px' : 'auto'}
-  `,}}>
+  `,
+          }}
+        >
           {catPics.map(pic => (
             <li key={pic.id} className={css.catItem} data-id={pic.id}>
               <a href={pic.url}>
@@ -61,6 +78,14 @@ export const TasksAllList = ({ children }) => {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div>
+        {catPics.length !== 0 ? (
+          <button onClick={handleGalleryButtonPress} className={css.loadBtn}>
+            Load More
+          </button>
+        ) : null}
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
 
-axios.defaults.baseURL = 'https://geo-pets-backend.onrender.com/api';
+axios.defaults.baseURL = 'http://localhost:8001/api';
 
 //axios.defaults.baseURL = 'https://airboxify-backend.onrender.com/api';
 

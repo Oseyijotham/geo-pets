@@ -8,7 +8,13 @@ export const selectContactsFilter = state => state.filter;
 
 export const selectIsLoading = state => state.contacts.contacts.isLoading;
 
+export const selectCatPageNums = state => state.contacts.contacts.catPageNums;
+
+export const selectDogPageNums = state => state.contacts.contacts.dogPageNums;
+
 export const selectIsCatPicsLoading = state => state.contacts.contacts.isCatPicsLoading;
+
+export const selectIsDogPicsLoading = state => state.contacts.contacts.isDogPicsLoading;
 
 export const selectIsGenKey = state => state.contacts.contacts.isGenKey;
 

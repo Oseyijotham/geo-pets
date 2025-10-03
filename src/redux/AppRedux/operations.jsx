@@ -1077,7 +1077,6 @@ export const fetchCatPics = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axios.get('/places/catpics');
-      console.log(res.data);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -1090,10 +1089,34 @@ export const fetchDogPics = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await axios.get('/places/dogpics');
-      console.log(res.data);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
+
+export const fetchMoreCatPics = createAsyncThunk(
+  'api/moreCatPics',
+  async ({ pageNum }, thunkAPI) => {
+    try {
+      const res = await axios.post('/places/morecatpics', { pageNum } );
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchMoreDogPics = createAsyncThunk(
+  'api/moreDogPics',
+  async ({ pageNum }, thunkAPI) => {
+    try {
+      const res = await axios.post('/places/moredogpics', { pageNum });
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+

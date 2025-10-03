@@ -8,17 +8,27 @@ import {
   selectError,
   selectIsLoading,
   selectDogPics,
+  selectDogPageNums
 } from '../../redux/AppRedux/selectors';
+import {fetchMoreDogPics, fetchDogPics} from '../../redux/AppRedux/operations';
 import css from './TasksPendingList.module.css';
-import { Loader } from '../Loader/Loader';
+import { Loader } from '../dogLoader/Loader';
 
 export const TasksPendingList = ({ children }) => {
 
   const isLoading = useSelector(selectIsLoading);
   const dogPics = useSelector(selectDogPics);
   const error = useSelector(selectError);
+  const dogPageNums = useSelector(selectDogPageNums);
   
   const dispatch = useDispatch();
+
+  const handleGalleryButtonPress = () => {
+      console.log(dogPageNums);
+      const storeVar = dogPageNums + 1;
+  
+      dispatch(fetchMoreDogPics({ pageNum: storeVar }));
+    }
 
   useEffect(() => {
     const lightbox = new SimpleLightbox('.gallery a', {
@@ -33,6 +43,12 @@ export const TasksPendingList = ({ children }) => {
       lightbox.destroy();
     };
   }, [dogPics]);
+
+   useEffect(() => {
+      if(dogPics.length === 0){
+        dispatch(fetchDogPics());
+      }
+    },[])
 
   return (
     <div className={css.contactsSection}>
@@ -63,6 +79,14 @@ export const TasksPendingList = ({ children }) => {
           ))}
         </ul>
       </div>
+
+        <div>
+              {dogPics.length !== 0 ? (
+                <button onClick={handleGalleryButtonPress} className={css.loadBtn}>
+                  Load More
+                </button>
+              ) : null}
+            </div>
     </div>
   );
 };
