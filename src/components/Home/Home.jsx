@@ -110,7 +110,7 @@ useEffect(() => {
                 setIsOneHovered(false);
               }}
             >
-              <Link to="/sharedLayout/sheduler" className={css.movieInfo}>
+              <Link to="/sharedLayout/placesFinder" className={css.movieInfo}>
                 <div className={css.catOverlay}>
                   <img
                     className={css.routeImage}
@@ -160,7 +160,7 @@ useEffect(() => {
                 setIsTwoHovered(false);
               }}
             >
-              <Link to="/sharedLayout/sorting" className={css.movieInfo}>
+              <Link to="/sharedLayout/apiCreator" className={css.movieInfo}>
                 <div className={css.catOverlay}>
                   <img
                     className={css.routeImage}
