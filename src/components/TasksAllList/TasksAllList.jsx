@@ -44,11 +44,7 @@ export const TasksAllList = ({ children }) => {
     };
   }, [catPics]);
 
-  useEffect(() => {
-    if(catPics.length === 0){
-      dispatch(fetchCatPics());
-    }
-  },[])
+ 
 
   return (
     <div className={css.contactsSection}>

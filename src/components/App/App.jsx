@@ -79,7 +79,7 @@ export const App = () => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
-    console.log('Initializing...'); // Add this to confirm it runs once
+    //console.log('Initializing...'); // Add this to confirm it runs once
 
     dispatch(refreshUser());
     dispatch(retrieveApiKey());
@@ -127,10 +127,10 @@ export const App = () => {
             element={<PrivateRoute redirectTo="/" component={<Home />} />}
           />
           <Route
-            path="sheduler"
+            path="placesFinder"
             element={<PrivateRoute redirectTo="/" component={<Contacts />} />}
           />
-          <Route path="sorting" element={<SharedSortingLayout />}>
+          <Route path="apiCreator" element={<SharedSortingLayout />}>
             <Route
               index
               element={
@@ -139,14 +139,14 @@ export const App = () => {
             />
 
             <Route
-              path="all"
+              path="catImages"
               element={
                 <PrivateRoute redirectTo="/" component={<SortedAllTasks />} />
               }
             />
 
             <Route
-              path="pending"
+              path="dogImages"
               element={
                 <PrivateRoute
                   redirectTo="/"
@@ -156,7 +156,7 @@ export const App = () => {
             />
 
             <Route
-              path="completed"
+              path="savedPlaces"
               element={
                 <PrivateRoute
                   redirectTo="/"
@@ -166,7 +166,7 @@ export const App = () => {
             />
 
             <Route
-              path="past_due"
+              path="apiDocumentation"
               element={
                 <PrivateRoute
                   redirectTo="/"

@@ -17,14 +17,14 @@ export const RestrictedRouteNav = ({ component: Component }) => {
     const onPastDue = useSelector(selectSortPastDue);
   const { isLoggedIn } = useAuthHook();
 
-  if(onAll === false && onPending === false && onFulfilled === false && onPastDue === false ) { return isLoggedIn ? <Navigate to={'all'} /> : Component;}
+  if(onAll === false && onPending === false && onFulfilled === false && onPastDue === false ) { return isLoggedIn ? <Navigate to={'catImages'} /> : Component;}
  
-  if(onAll === true) { return isLoggedIn ? <Navigate to={'all'} /> : Component;}
+  if(onAll === true) { return isLoggedIn ? <Navigate to={'catImages'} /> : Component;}
   
-  if(onPending === true) { return isLoggedIn ? <Navigate to={'pending'} /> : Component; } 
+  if(onPending === true) { return isLoggedIn ? <Navigate to={'dogImages'} /> : Component; } 
   
-  if(onFulfilled === true) { return isLoggedIn ? <Navigate to={'completed'} /> : Component; } 
+  if(onFulfilled === true) { return isLoggedIn ? <Navigate to={'savedPlaces'} /> : Component; } 
   
-  if(onPastDue === true){ return isLoggedIn ? <Navigate to={'past_due'} /> : Component;} 
+  if(onPastDue === true){ return isLoggedIn ? <Navigate to={'apiDocumentation'} /> : Component;} 
 };
 

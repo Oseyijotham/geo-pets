@@ -44,12 +44,6 @@ export const TasksPendingList = ({ children }) => {
     };
   }, [dogPics]);
 
-   useEffect(() => {
-      if(dogPics.length === 0){
-        dispatch(fetchDogPics());
-      }
-    },[])
-
   return (
     <div className={css.contactsSection}>
       <h3 className={css.contactsTitle}>Dog Pics</h3>

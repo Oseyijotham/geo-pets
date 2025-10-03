@@ -101,16 +101,16 @@ export const SharedSortingLayout = () => {
         </div>
       )}
       <Header>
-        <Link to="/sharedLayout/sorting/all" onClick={handleSortAll}>
+        <Link to="/sharedLayout/apiCreator/catImages" onClick={handleSortAll}>
           View Cat Images
         </Link>
-        <Link to="/sharedLayout/sorting/pending" onClick={handleSortPending}>
+        <Link to="/sharedLayout/apiCreator/dogImages" onClick={handleSortPending}>
           View Dog Images
         </Link>
-        <Link to="completed" onClick={handleSortFulfilled}>
+        <Link to="savedPlaces" onClick={handleSortFulfilled}>
           Add Places
         </Link>
-        <Link to="past_due" onClick={handleSortPastDue}>
+        <Link to="apiDocumentation" onClick={handleSortPastDue}>
           See Documentation
         </Link>
       </Header>
