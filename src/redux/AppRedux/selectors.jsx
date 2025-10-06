@@ -1,5 +1,7 @@
 export const selectPlaces = state => state.contacts.contacts.places;
 
+export const selectSavedPlaces = state => state.contacts.contacts.savedPlaces;
+
 export const selectCatPics = state => state.contacts.contacts.catPics;
 
 export const selectDogPics = state => state.contacts.contacts.dogPics;
@@ -20,6 +22,10 @@ export const selectIsGenKey = state => state.contacts.contacts.isGenKey;
 
 export const selectIsUpdateLoading = state => state.contacts.contacts.isUpdateLoading;
 
+export const selectIsSavedPlacesLoading = state => state.contacts.contacts.isSavedPlacesLoading;
+
+export const selectIsDeletePlacesLoading = state => state.contacts.contacts.isDeletePlacesLoading;
+
 export const selectIsKeyLoading = state => state.contacts.contacts.isKeyLoading;
 
 export const selectError = state => state.contacts.contacts.error;
@@ -35,6 +41,8 @@ export const selectOpenSortedCompletedModal = state => state.contacts.contacts.o
 export const selectOpenSortedPastDueModal = state => state.contacts.contacts.openMyPastDueModal;
 
 export const selectedContact = state => state.contacts.contacts.selectedContact;
+
+export const selectedSavedPlace = state => state.contacts.contacts.selectedSavedPlace;
 
 export const selectedSortedAllContact = state => state.contacts.contacts.selectedSortedAllContact;
 

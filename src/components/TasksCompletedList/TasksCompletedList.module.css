@@ -1,3 +1,36 @@
+.centerStyle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  padding: 10px;
+}
+
+.centerLabel{
+  color: #fff;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.backDrop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .contactsSection {
   display: flex;
   flex-direction: column;
@@ -154,10 +187,26 @@ background-image: linear-gradient(to top left, #ffb800, #9225ff);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap:5px;
 }
 
 .contactsButton{
+    padding: 3px;
+  border-radius: 50%;
+  text-align: center;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+    color: #fff;
+    background-color: #9225ff;
+    border: 1px solid #fff;
+    margin:2px;
+    fill:#fff;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contactsDeleteButton{
     padding: 3px;
   border-radius: 10px;
   text-align: center;
@@ -169,9 +218,14 @@ background-image: linear-gradient(to top left, #ffb800, #9225ff);
     border: 1px solid #fff;
     margin:2px;
     fill:#fff;
+    
 }
 
 .contactsButton:hover{
+background-color: #ffb800;
+}
+
+.contactsDeleteButton:hover{
 background-color: #ffb800;
 }
 

@@ -38,16 +38,16 @@ export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, 
   const isUpdateLoading = useSelector(selectIsUpdateLoading);
   const error = useSelector(selectError);
   const [taskStatus, setTaskStatus] = useState();
-  //let myContacts  
+  
   const dispatch = useDispatch();
   const filterValue = useSelector(selectContactsFilter);
 
   const handleModalOpen = (evt) => {
     if (evt.target.getAttribute('data-id')) {
-      //console.log('Modal opened!');
+      
 
       const id = evt.currentTarget.getAttribute('data-id');
-      //console.log(id);
+      
       dispatch(fetchContactById(id));
       dispatch(openModal());
       dispatch(openMobileAndTabModal());
@@ -62,7 +62,7 @@ export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, 
       evt.target.style.boxShadow = 'none';
     }, 500);
     sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-    //let fwdWar = lowerLimit + 4;
+    
     if (filterValue === "") {
       lowerLimitSetter(lowerLimitProp + 4);
       upperLimitSetter(upperLimitProp + 4);
@@ -83,7 +83,7 @@ export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, 
        sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
      }, 80);
     
-    //let fwdWar = lowerLimit + 4;
+    
     if (filterValue === "") {
       lowerLimitSetter(lowerLimitProp - 4);
       upperLimitSetter(upperLimitProp - 4);

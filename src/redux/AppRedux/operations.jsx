@@ -324,7 +324,7 @@ export const updateSortedCompletedContactAvatar = createAsyncThunk(
     });
     try {
       const res = await axios.patch(
-        `/contacts/avatars/${myId}`,
+        `/places/avatars/${myId}`,
         { avatar: myFile },
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -474,17 +474,17 @@ export const updateSortedPendingContactName = createAsyncThunk(
 
 export const updateSortedCompletedContactName = createAsyncThunk(
   'contacts/updateSortedCompletedContactName',
-  async ({ name, myUpdateId }, thunkAPI) => {
-    Notiflix.Loading.pulse('Updating Client Name...', {
+  async ({ description, myUpdateId }, thunkAPI) => {
+    Notiflix.Loading.pulse('Updating Place Description...', {
       svgColor: '#9225ff',
       fontFamily: 'DM Sans',
     });
     try {
-      const res = await axios.patch(`/contacts/nameupdate/${myUpdateId}`, {
-        name,
+      const res = await axios.patch(`/places/detailsUpdate/${myUpdateId}`, {
+        description,
       });
 
-      const response = await axios.get('/contacts');
+      const response = await axios.get('/places/savedPlaces');
 
       Notiflix.Loading.remove();
       //return res.data;
@@ -885,6 +885,25 @@ export const fetchContactById = createAsyncThunk(
   }
 );
 
+export const fetchSavedPlaceById = createAsyncThunk(
+  'places/oneSavedPlace',
+  async (id, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState();
+      const foundPlaces = state.contacts.contacts.savedPlaces;
+      const myObj = foundPlaces.find(place => place._id === id);
+      return myObj;
+    } catch (error) {
+      if (error.response.status === 401) {
+        thunkAPI.dispatch(logOut());
+        Notiflix.Notify.failure('Invalid Session, login again');
+      }
+      Notiflix.Notify.failure(error.response.data.error.message);
+      return thunkAPI.rejectWithValue(null);
+    }
+  }
+);
+
 export const fetchSortedAllContactById = createAsyncThunk(
   'contacts/fetchSortedAllById',
   async (id, thunkAPI) => {
@@ -1113,6 +1132,30 @@ export const fetchMoreDogPics = createAsyncThunk(
   async ({ pageNum }, thunkAPI) => {
     try {
       const res = await axios.post('/places/moredogpics', { pageNum });
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSavedPlaces = createAsyncThunk(
+  'places/savedPlaces',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.get('/places/savedPlaces');
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deletePlaces = createAsyncThunk(
+  'places/deletePlaces',
+  async (_, thunkAPI) => {
+    try {
+      const res = await axios.delete('/places/deletePlaces');
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

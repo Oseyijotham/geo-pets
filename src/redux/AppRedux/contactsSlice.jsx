@@ -61,7 +61,10 @@ import {
   fetchCatPics,
   fetchDogPics,
   fetchMoreCatPics,
-  fetchMoreDogPics
+  fetchMoreDogPics,
+  getSavedPlaces,
+  deletePlaces,
+  fetchSavedPlaceById,
 } from './operations';
 
 import { clearData } from '../AuthRedux/operations';
@@ -84,6 +87,7 @@ const contactsSlice = createSlice({
       places: [],
       catPics: [],
       dogPics: [],
+      savedPlaces: [],
       catPageNums: 0,
       dogPageNums: 0,
       isLoading: false,
@@ -92,6 +96,8 @@ const contactsSlice = createSlice({
       isKeyLoading: false,
       isCatPicsLoading: false,
       isDogPicsLoading: false,
+      isSavedPlacesLoading: false,
+      isDeletePlacesLoading: false,
       error: null,
       openMyModal: false,
       openMyMobileAndTabModal: true,
@@ -108,6 +114,15 @@ const contactsSlice = createSlice({
           names: { primary: null },
           addresses: [{}],
           socials: [],
+        },
+      },
+      selectedSavedPlace: {
+        data: {
+          properties: {
+            names: { primary: null },
+            addresses: [{}],
+            socials: [],
+          }
         },
       },
       selectedSortedAllContact: {
@@ -154,6 +169,13 @@ const contactsSlice = createSlice({
     builder
       .addCase(clearData.fulfilled, (state, action) => {
         state.contacts.catPics = action.payload;
+        state.contacts.places = [];
+        state.contacts.catPics = [];
+        state.contacts.dogPics = [];
+        state.contacts.catPageNums = 0;
+        state.contacts.dogPageNums = 0;
+        state.contacts.countryName = null;
+        state.contacts.categoryName = null;
       })
       .addCase(retrieveApiKey.pending, handlePending)
       .addCase(retrieveApiKey.fulfilled, (state, action) => {
@@ -206,21 +228,43 @@ const contactsSlice = createSlice({
         state.contacts.error = true;
       })
 
-      .addCase(fetchDogPics.pending, handlePending)
+      .addCase(fetchDogPics.pending, state => {
+        state.contacts.isDogPicsLoading = true;
+      })
       .addCase(fetchDogPics.fulfilled, (state, action) => {
-        state.contacts.isLoading = false;
+        state.contacts.isDogPicsLoading = false;
         state.contacts.error = null;
         state.contacts.dogPics = action.payload;
       })
-      .addCase(fetchDogPics.rejected, handleRejected)
-
-      .addCase(fetchContacts.pending, handlePending)
-      .addCase(fetchContacts.fulfilled, (state, action) => {
-        state.contacts.isLoading = false;
-        state.contacts.error = null;
-        state.contacts.items = action.payload;
+      .addCase(fetchDogPics.rejected, state => {
+        state.contacts.isDogPicsLoading = false;
       })
-      .addCase(fetchContacts.rejected, handleRejected)
+
+      .addCase(getSavedPlaces.pending, state => {
+        state.contacts.isSavedPlacesLoading = true;
+      })
+      .addCase(getSavedPlaces.fulfilled, (state, action) => {
+        state.contacts.isSavedPlacesLoading = false;
+        state.contacts.error = null;
+        state.contacts.savedPlaces = action.payload;
+      })
+      .addCase(getSavedPlaces.rejected, state => {
+        state.contacts.isSavedPlacesLoading = false;
+        state.contacts.error = true;
+      })
+
+      .addCase(deletePlaces.pending, state => {
+        state.contacts.isDeletePlacesLoading = true;
+      })
+      .addCase(deletePlaces.fulfilled, (state, action) => {
+        state.contacts.isDeletePlacesLoading = false;
+        state.contacts.error = null;
+        state.contacts.savedPlaces = action.payload;
+      })
+      .addCase(deletePlaces.rejected, state => {
+        state.contacts.isDeletePlacesLoading = false;
+        state.contacts.error = true;
+      })
 
       .addCase(searchPlaces.pending, handlePending)
       .addCase(searchPlaces.fulfilled, (state, action) => {
@@ -287,6 +331,19 @@ const contactsSlice = createSlice({
         state.contacts.isSlideLoading = false;
       })
       .addCase(fetchContactById.rejected, (state, action) => {
+        state.contacts.isSlideLoading = false;
+        state.contacts.isSlideError = action.payload;
+      })
+
+      .addCase(fetchSavedPlaceById.pending, state => {
+        state.contacts.isSlideLoading = true;
+        state.contacts.selectedContact.avatarURL = null;
+      })
+      .addCase(fetchSavedPlaceById.fulfilled, (state, action) => {
+        state.contacts.selectedSavedPlace = action.payload;
+        state.contacts.isSlideLoading = false;
+      })
+      .addCase(fetchSavedPlaceById.rejected, (state, action) => {
         state.contacts.isSlideLoading = false;
         state.contacts.isSlideError = action.payload;
       })
@@ -484,36 +541,9 @@ const contactsSlice = createSlice({
       .addCase(
         updateSortedCompletedContactAvatar.fulfilled,
         (state, action) => {
-          state.contacts.selectedSortedCompletedContact.avatarURL =
+          state.contacts.selectedSavedPlace.avatarURL =
             action.payload.avatarURL;
 
-          if (
-            state.contacts.selectedContact._id ===
-            state.contacts.selectedSortedPendingContact._id
-          ) {
-            state.contacts.selectedContact.avatarURL = action.payload.avatarURL;
-          }
-          if (
-            state.contacts.selectedSortedAllContact._id ===
-            state.contacts.selectedSortedPendingContact._id
-          ) {
-            state.contacts.selectedSortedPendingContact.avatarURL =
-              action.payload.avatarURL;
-          }
-          if (
-            state.contacts.selectedSortedCompletedContact._id ===
-            state.contacts.selectedSortedPendingContact._id
-          ) {
-            state.contacts.selectedSortedCompletedContact.avatarURL =
-              action.payload.avatarURL;
-          }
-          if (
-            state.contacts.selectedSortedPastDueContact._id ===
-            state.contacts.selectedSortedPendingContact._id
-          ) {
-            state.contacts.selectedSortedPastDueContact.avatarURL =
-              action.payload.avatarURL;
-          }
         }
       )
       .addCase(updateSortedPastDueContactAvatar.fulfilled, (state, action) => {
@@ -649,35 +679,10 @@ const contactsSlice = createSlice({
       .addCase(updateSortedPendingContactName.rejected, handleRejected)
       .addCase(updateSortedCompletedContactName.pending, handlePending)
       .addCase(updateSortedCompletedContactName.fulfilled, (state, action) => {
-        state.contacts.selectedSortedCompletedContact.name =
-          action.payload.newObj.name;
-        state.contacts.items = action.payload.newRay;
+        state.contacts.selectedSavedPlace.description =
+          action.payload.newObj.description;
+        state.contacts.savedPlaces = action.payload.newRay;
         state.contacts.isLoading = false;
-        if (
-          state.contacts.selectedContact._id ===
-          state.contacts.selectedSortedCompletedContact._id
-        ) {
-          state.contacts.selectedContact = action.payload.newObj;
-        }
-        if (
-          state.contacts.selectedSortedAllContact._id ===
-          state.contacts.selectedSortedCompletedContact._id
-        ) {
-          state.contacts.selectedSortedAllContact = action.payload.newObj;
-        }
-        if (
-          state.contacts.selectedSortedPendingContact._id ===
-          state.contacts.selectedSortedCompletedContact._id
-        ) {
-          state.contacts.selectedSortedPendingContact = action.payload.newObj;
-        }
-        if (
-          state.contacts.selectedSortedPastDueContact._id ===
-          state.contacts.selectedSortedCompletedContact._id
-        ) {
-          state.contacts.selectedSortedPastDueContact = action.payload.newObj;
-        }
-        //state.token = action.payload.token;
       })
       .addCase(updateSortedCompletedContactName.rejected, handleRejected)
       .addCase(updateContactEmail.pending, handlePending)

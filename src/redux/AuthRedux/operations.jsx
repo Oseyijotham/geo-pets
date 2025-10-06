@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import Notiflix from 'notiflix';
 
-axios.defaults.baseURL = 'https://geo-pets-backend.onrender.com/api';
+axios.defaults.baseURL = 'http://localhost:8001/api';
 
 //axios.defaults.baseURL = 'https://airboxify-backend.onrender.com/api';
 
@@ -68,24 +68,24 @@ export const logIn = createAsyncThunk(
 );
 
 
+export const clearData = createAsyncThunk('auth/clear', async (_, thunkAPI) => {
+  return []
+});
+
 export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-    Notiflix.Loading.pulse('Logging You Out...', {
-      svgColor: '#9225ff',
-      fontFamily: 'DM Sans',
-    });
+  Notiflix.Loading.pulse('Logging You Out...', {
+    svgColor: '#9225ff',
+    fontFamily: 'DM Sans',
+  });
   try {
     await axios.get('/users/logout');
-  
+    thunkAPI.dispatch(clearData());
     clearAuthHeader();
-     Notiflix.Loading.remove();
+    Notiflix.Loading.remove();
   } catch (error) {
     Notiflix.Loading.remove();
     return thunkAPI.rejectWithValue(null);
   }
-});
-
-export const clearData = createAsyncThunk('auth/clear', async (_, thunkAPI) => {
-  return []
 });
 
 

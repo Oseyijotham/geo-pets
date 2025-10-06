@@ -7,9 +7,9 @@ import { PrivateRoute } from '../PrivateRoute/PrivateRoute';
 import { RestrictedRouteRegister } from '../RestrictedRouteRegister/RestrictedRouteRegister';
 import { RestrictedRouteLogin } from '../RestrictedRouteLogin/RestrictedRouteLogin';
 import { RestrictedRouteNav } from '../RestrictedRouteNav/RestrictedRouteNav';
-import { refreshUser, getUser, logOut } from '../../redux/AuthRedux/operations';
-import { retrieveApiKey, fetchCatPics, fetchDogPics } from '../../redux/AppRedux/operations';
-import { useDispatch, useSelector } from 'react-redux';
+import { refreshUser, logOut } from '../../redux/AuthRedux/operations';
+import { retrieveApiKey } from '../../redux/AppRedux/operations';
+import { useDispatch } from 'react-redux';
 import { useAuthHook } from '../../customHook/customHook'
 import { jwtDecode } from 'jwt-decode';
 import Notiflix from 'notiflix';
@@ -79,15 +79,12 @@ export const App = () => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
-    //console.log('Initializing...'); // Add this to confirm it runs once
-
     dispatch(refreshUser());
     dispatch(retrieveApiKey());
-    dispatch(fetchCatPics());
-    dispatch(fetchDogPics());
+
   }, []);
   return isRefreshing ? (
-    <div>
+    <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center', height: '100vh', width: '100vw' }}>
       <ThreeCircles
         visible={true}
         height="80"

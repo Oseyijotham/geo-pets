@@ -47,7 +47,6 @@
   background-image: linear-gradient(to top left, #ffb800, #9225ff);
   position: absolute;
     width: 550px;
-    bottom: 5%;
     border-radius: 30px;
     padding: 10px;
     transform: translateX(0%);
@@ -196,10 +195,8 @@ font-size: 26px;
 }
 
 .detailsWrapper{
-  /*background-image: linear-gradient(to bottom, #c4253a 40%, #ffb8ca);*/
-  /*background-color: #c4253a;*/
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 3px;
+  padding-right: 3px;
   padding-top: 5px;
   padding-bottom: 5px;
   border-radius: 30px;
@@ -216,6 +213,7 @@ font-size: 26px;
 @media screen and (max-width:767px) {
   .detailsWrapper{
     font-size: 13px;
+    width: 300px
   }
 }
 
@@ -283,7 +281,8 @@ background-color: #280a46;
   border: 1px solid #fff;
   background-color:#9225ff;
   width: 120px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 767px) {
@@ -294,15 +293,10 @@ background-color: #280a46;
 
 @media (min-width: 768px) {
   .detailsVal{
-  width: 350px;
+  width: 320px;
 }
 }
 
-@media (min-width: 1280px) {
-  .detailsVal{
-    width: 100%;
-  }
-}
 
 .detailsDetailsVal{
   padding: 5px;

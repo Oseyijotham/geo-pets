@@ -20,8 +20,6 @@ import css from './Contacts.module.css';
 import svg from './icons.svg';
 import { ThreeCircles } from 'react-loader-spinner';
 import { useState } from 'react';
-import Notiflix from 'notiflix';
-import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 import { useMediaQuery } from 'react-responsive';
 import { useRef } from 'react';
@@ -54,9 +52,6 @@ export const Contacts = () => {
 
   
   useEffect(() => { if (isOpenModal === true) { sectionRef.current?.scrollIntoView({ behavior: 'smooth' }); } }, [isOpenModal]);
-
-
-  //console.log(myVal);
 
   return (
     <div className={clsx(css.coverWrapper, {})}>

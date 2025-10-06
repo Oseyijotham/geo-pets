@@ -3,25 +3,31 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
-  selectContactsFilter,
   selectFilterDown,
   selectError,
-  selectIsLoading,
+  selectIsSavedPlacesLoading,
+  selectIsDeletePlacesLoading,
+  selectSavedPlaces,
 } from '../../redux/AppRedux/selectors';
 import {
   deleteContact,
   openSortedCompletedModal,
-  fetchSortedCompletedContactById,
   updateStatus,
   openCompletedMobileAndTabModal,
+  fetchSavedPlaceById,
 } from '../../redux/AppRedux/operations';
 import css from './TasksCompletedList.module.css';
+import { ThreeCircles } from 'react-loader-spinner';
+import icons from './icons.svg';
+
 export const TasksCompletedList = ({ children }) => {
-  const contacts = useSelector(selectPlaces);
-  const filterDown = useSelector(selectFilterDown);
-  const isLoading = useSelector(selectIsLoading);
+  const [isTrue, setIfTrue] = useState(true);
+  const savedPlaces = useSelector(selectSavedPlaces);
+  const isSavedPlacesLoading = useSelector(selectIsSavedPlacesLoading);
+  const isDeletePlacesLoading = useSelector(selectIsDeletePlacesLoading);
   const error = useSelector(selectError);
   const dispatch = useDispatch();
+
   const handleDelete = evt => {
     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
     setTimeout(() => {
@@ -30,22 +36,19 @@ export const TasksCompletedList = ({ children }) => {
     dispatch(deleteContact(evt.target.name));
     
   };
-  const filterValue = useSelector(selectContactsFilter);
 
   const handleModalOpen = (evt) => {
     if (evt.target.getAttribute('data-id')) {
-      //console.log('Modal opened!');
 
       const id = evt.currentTarget.getAttribute('data-id');
-      //console.log(id);
-      dispatch(fetchSortedCompletedContactById(id));
+      
+      dispatch(fetchSavedPlaceById(id));
       dispatch(openSortedCompletedModal());
       dispatch(openCompletedMobileAndTabModal());
     }
   };
   const [lowerLimit, setLowerLimit] = useState(0);
   const [upperLimit, setUpperLimit] = useState(4);
-  const [newRay, setNewRay] = useState([]);
 
 
   const handleForward = (evt) => {
@@ -53,18 +56,10 @@ export const TasksCompletedList = ({ children }) => {
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 500);
-    //let fwdWar = lowerLimit + 4;
     
       setLowerLimit(lowerLimit + 4);
       setUpperLimit(upperLimit + 4);
     
-    /*if (filterValue !== "") {
-      console.log("OK")
-      const str = filterUp;
-      const sto = filterDown
-      dispatch(handleFilterFowardUp(str));
-      dispatch(handleFilterFowardDown(sto));
-    }*/
   }
 
   const handleBackward = (evt) => {
@@ -72,114 +67,132 @@ export const TasksCompletedList = ({ children }) => {
      setTimeout(() => {
        evt.target.style.boxShadow = 'none';
      }, 500);
-    //let fwdWar = lowerLimit + 4;
     
       setLowerLimit(lowerLimit - 4);
       setUpperLimit(upperLimit - 4);
-    
-    /*if (filterValue !== '') {
-      const str1 = filterUp;
-      const sto1 = filterDown;
-       dispatch(handleFilterBackwardUp(str1));
-       dispatch(handleFilterBackwardDown(sto1));
-     }*/
   };
   
   const handleChange = (evt) => {
     dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
   }
 
-  
-  const completedMatches = newRay.filter(contact => contact.status === true);
-
   return (
     <div className={css.contactsSection}>
-      <h3 className={css.contactsTitle}>Saved Places</h3>
+      <h3 className={css.contactsTitle}>Update Saved Places</h3>
       {children}
+      <div style={{ position: 'relative' }}>
+        {(isSavedPlacesLoading || isDeletePlacesLoading) && (
+          <div className={css.backDrop}>
+            <div className={css.centerStyle}>
+              <ThreeCircles
+                visible={true}
+                height="60"
+                width="60"
+                color="#9225ff"
+                radius="9"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClass={css.loader}
+              />
+              {isSavedPlacesLoading && (
+                <p className={css.centerLabel}>
+                  Please be patient, fetching places can take up to 60 seconds
+                </p>
+              )}
+              {isDeletePlacesLoading && isTrue === true && (
+                <p className={css.centerLabel}>
+                  Saving place to your API Database
+                </p>
+              )}
+              {isDeletePlacesLoading && isTrue === false && (
+                <p className={css.centerLabel}>
+                  Removing place from your API Database
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
-      {completedMatches.length === 0 && (
-        <div className={css.contactsListAlt}>
-          {isLoading && !error && (
-            <b className={css.notification}>Loading Documentation...</b>
-          )}
-          {!isLoading && !error && (
-            <b className={css.notification}>COMING SOON, STAY TUNED</b>
-          )}
-          {!isLoading && error && <b className={css.notification}>Error!!!</b>}
-        </div>
-      )}
-      {completedMatches.length !== 0 && (
-        <ul className={css.contactsList}>
-          {console.log(completedMatches)}
-          {completedMatches.map(contact => {
-            const myindex = completedMatches.indexOf(contact);
-            if (myindex >= lowerLimit && myindex < upperLimit) {
-              return (
-                <li
-                  key={contact._id}
-                  data-id={contact._id}
-                  className={css.contactsItem}
-                  onClick={handleModalOpen}
-                >
-                  <span className={css.contactsData} data-id={contact._id}>
-                    <input
-                      type="checkbox"
-                      className={css.checkbox}
-                      checked={contact.status}
-                      name={contact._id}
-                      onChange={handleChange}
-                    />
-                    :{' '}
-                    <span className={css.contactsPhone} data-id={contact._id}>
-                      {contact.name}
+        {savedPlaces.length !== 0 && (
+          <ul className={css.contactsList} >
+            {console.log(savedPlaces)}
+            {savedPlaces.map(place => {
+              const myindex = savedPlaces.indexOf(place);
+              if (myindex >= lowerLimit && myindex < upperLimit) {
+                return (
+                  <li
+                    key={place._id}
+                    data-id={place._id}
+                    className={css.contactsItem}
+                    onClick={handleModalOpen}
+                  >
+                    <span className={css.contactsData} data-id={place._id}>
+                      <span className={css.contactsPhone} data-id={place._id}>
+                        {place.data.properties.names.primary}
+                      </span>
                     </span>
-                  </span>
-                  <span className={css.contactsButtonArea}>
-                    <button
-                      type="submit"
-                      className={css.contactsButton}
-                      name={contact._id}
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </li>
-              );
-            }
-          })}
-        </ul>
-      )}
 
+                    <span className={css.contactsButtonArea}>
+                      {place.data.properties.socials.length !== 0 && (
+                        <a
+                          className={css.contactsButton}
+                          name={place._id}
+                          href={place.data.properties.socials[0]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <svg
+                            width="20"
+                            height="20"
+                            className={css.socialsIcon}
+                          >
+                            <use href={`${icons}#icon-facebook`} />
+                          </svg>
+                        </a>
+                      )}
+                      <button
+                        type="submit"
+                        className={css.contactsDeleteButton}
+                        name={place._id}
+                        onClick={handleDelete}
+                      >
+                        Delete
+                      </button>
+                    </span>
+                  </li>
+                );
+              }
+            })}
+          </ul>
+        )}
+
+        {savedPlaces.length === 0 && (
+          <div className={css.contactsListAlt}>
+            {isSavedPlacesLoading && !error && (
+              <b className={css.notification}>Loading Saved Places</b>
+            )}
+            {!isSavedPlacesLoading && !error && (
+              <b className={css.notification}>NO SAVED PLACES !!!</b>
+            )}
+            {!isSavedPlacesLoading && error && (
+              <b className={css.notification}>Error!!!</b>
+            )}
+          </div>
+        )}
+      </div>
       <div className={css.navigationArea}>
         {lowerLimit !== 0 && (
           <button className={css.navigationButton} onClick={handleBackward}>
             Prev
           </button>
         )}
-        {!(upperLimit > completedMatches.length) &&
-          upperLimit !== completedMatches.length && (
+        {!(upperLimit > savedPlaces.length) &&
+          upperLimit !== savedPlaces.length && (
             <button className={css.navigationButton} onClick={handleForward}>
               Forward
             </button>
           )}
       </div>
-
-      {filterValue !== '' && (
-        <div className={css.navigationArea}>
-          {filterDown !== 0 && (
-            <button className={css.navigationButton} onClick={handleBackward}>
-              Prev
-            </button>
-          )}
-          {/*!(filterUp > bestMatches.length) &&
-            filterUp !== bestMatches.length && (
-              <button className={css.navigationButton} onClick={handleForward}>
-                Forward
-              </button>
-            )*/}
-        </div>
-      )}
     </div>
   );
 };
