@@ -259,7 +259,32 @@ const contactsSlice = createSlice({
       .addCase(deletePlaces.fulfilled, (state, action) => {
         state.contacts.isDeletePlacesLoading = false;
         state.contacts.error = null;
-        state.contacts.savedPlaces = action.payload;
+        state.contacts.savedPlaces = action.payload.result;
+        state.contacts.places = state.contacts.places.map(place => {
+          if (
+            place.id === action.payload.deleted.data.id &&
+            action.payload.deleted.data.status === true
+          ) {
+            // Return new object with updated status
+            return {
+              ...place,
+              status: true,
+            };
+          }
+
+          if (
+            place.id === action.payload.deleted.data.id &&
+            action.payload.deleted.data.status === false
+          ) {
+            // Return new object with updated status
+            return {
+              ...place,
+              status: false,
+            };
+          }
+          // Return original place for non-matches
+          return place;
+        });
       })
       .addCase(deletePlaces.rejected, state => {
         state.contacts.isDeletePlacesLoading = false;

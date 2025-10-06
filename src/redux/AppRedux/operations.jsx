@@ -1153,9 +1153,9 @@ export const getSavedPlaces = createAsyncThunk(
 
 export const deletePlaces = createAsyncThunk(
   'places/deletePlaces',
-  async (_, thunkAPI) => {
+  async (placeId, thunkAPI) => {
     try {
-      const res = await axios.delete('/places/deletePlaces');
+      const res = await axios.delete(`/places/deletePlaces/${placeId}`);
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

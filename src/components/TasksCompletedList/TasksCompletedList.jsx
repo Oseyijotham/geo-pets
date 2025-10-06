@@ -10,9 +10,8 @@ import {
   selectSavedPlaces,
 } from '../../redux/AppRedux/selectors';
 import {
-  deleteContact,
+  deletePlaces,
   openSortedCompletedModal,
-  updateStatus,
   openCompletedMobileAndTabModal,
   fetchSavedPlaceById,
 } from '../../redux/AppRedux/operations';
@@ -33,7 +32,7 @@ export const TasksCompletedList = ({ children }) => {
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 1000);
-    dispatch(deleteContact(evt.target.name));
+    dispatch(deletePlaces(evt.target.name));
     
   };
 
@@ -72,9 +71,7 @@ export const TasksCompletedList = ({ children }) => {
       setUpperLimit(upperLimit - 4);
   };
   
-  const handleChange = (evt) => {
-    dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
-  }
+ 
 
   return (
     <div className={css.contactsSection}>
@@ -99,14 +96,9 @@ export const TasksCompletedList = ({ children }) => {
                   Please be patient, fetching places can take up to 60 seconds
                 </p>
               )}
-              {isDeletePlacesLoading && isTrue === true && (
+              {isDeletePlacesLoading && (
                 <p className={css.centerLabel}>
-                  Saving place to your API Database
-                </p>
-              )}
-              {isDeletePlacesLoading && isTrue === false && (
-                <p className={css.centerLabel}>
-                  Removing place from your API Database
+                  Removing place from your API Database, hold on a bit
                 </p>
               )}
             </div>
