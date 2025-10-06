@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/geo-pets/static/css/main.1ff47ebf.css",
-    "main.js": "/geo-pets/static/js/main.a9333b01.js",
+    "main.js": "/geo-pets/static/js/main.4b0bf915.js",
     "static/css/963.ee965a66.chunk.css": "/geo-pets/static/css/963.ee965a66.chunk.css",
     "static/js/963.14da4813.chunk.js": "/geo-pets/static/js/963.14da4813.chunk.js",
     "static/css/359.838a3f75.chunk.css": "/geo-pets/static/css/359.838a3f75.chunk.css",
@@ -17,7 +17,7 @@
     "static/css/607.31c69153.chunk.css": "/geo-pets/static/css/607.31c69153.chunk.css",
     "static/js/607.c8f5a0fa.chunk.js": "/geo-pets/static/js/607.c8f5a0fa.chunk.js",
     "static/css/716.0d16bea2.chunk.css": "/geo-pets/static/css/716.0d16bea2.chunk.css",
-    "static/js/716.8ba6ba42.chunk.js": "/geo-pets/static/js/716.8ba6ba42.chunk.js",
+    "static/js/716.252724ce.chunk.js": "/geo-pets/static/js/716.252724ce.chunk.js",
     "static/css/864.122a970d.chunk.css": "/geo-pets/static/css/864.122a970d.chunk.css",
     "static/js/864.99392f40.chunk.js": "/geo-pets/static/js/864.99392f40.chunk.js",
     "static/css/420.8597b371.chunk.css": "/geo-pets/static/css/420.8597b371.chunk.css",
@@ -42,7 +42,7 @@
     "index.html": "/geo-pets/index.html",
     "static/media/list2.svg": "/geo-pets/static/media/list2.143e2e7e12285cdac47190b8872b6f89.svg",
     "main.1ff47ebf.css.map": "/geo-pets/static/css/main.1ff47ebf.css.map",
-    "main.a9333b01.js.map": "/geo-pets/static/js/main.a9333b01.js.map",
+    "main.4b0bf915.js.map": "/geo-pets/static/js/main.4b0bf915.js.map",
     "963.ee965a66.chunk.css.map": "/geo-pets/static/css/963.ee965a66.chunk.css.map",
     "963.14da4813.chunk.js.map": "/geo-pets/static/js/963.14da4813.chunk.js.map",
     "359.838a3f75.chunk.css.map": "/geo-pets/static/css/359.838a3f75.chunk.css.map",
@@ -58,7 +58,7 @@
     "607.31c69153.chunk.css.map": "/geo-pets/static/css/607.31c69153.chunk.css.map",
     "607.c8f5a0fa.chunk.js.map": "/geo-pets/static/js/607.c8f5a0fa.chunk.js.map",
     "716.0d16bea2.chunk.css.map": "/geo-pets/static/css/716.0d16bea2.chunk.css.map",
-    "716.8ba6ba42.chunk.js.map": "/geo-pets/static/js/716.8ba6ba42.chunk.js.map",
+    "716.252724ce.chunk.js.map": "/geo-pets/static/js/716.252724ce.chunk.js.map",
     "864.122a970d.chunk.css.map": "/geo-pets/static/css/864.122a970d.chunk.css.map",
     "864.99392f40.chunk.js.map": "/geo-pets/static/js/864.99392f40.chunk.js.map",
     "420.8597b371.chunk.css.map": "/geo-pets/static/css/420.8597b371.chunk.css.map",
@@ -70,6 +70,6 @@
   },
   "entrypoints": [
     "static/css/main.1ff47ebf.css",
-    "static/js/main.a9333b01.js"
+    "static/js/main.4b0bf915.js"
   ]
 }
