@@ -318,7 +318,7 @@ export const updateSortedPendingContactAvatar = createAsyncThunk(
 export const updateSortedCompletedContactAvatar = createAsyncThunk(
   'contacts/updateSortedCompletedContactAvatar',
   async ({ myFile, myId }, thunkAPI) => {
-    Notiflix.Loading.pulse('Updating Client Avatar...', {
+    Notiflix.Loading.pulse('Updating Place Avatar...', {
       svgColor: '#9225ff',
       fontFamily: 'DM Sans',
     });
@@ -889,10 +889,12 @@ export const fetchSavedPlaceById = createAsyncThunk(
   'places/oneSavedPlace',
   async (id, thunkAPI) => {
     try {
-      const state = thunkAPI.getState();
+     /* const state = thunkAPI.getState();
       const foundPlaces = state.contacts.contacts.savedPlaces;
       const myObj = foundPlaces.find(place => place._id === id);
-      return myObj;
+      return myObj;*/
+      const res = await axios.get(`/places/getOnePlace/${id}`);
+      return res.data;
     } catch (error) {
       if (error.response.status === 401) {
         thunkAPI.dispatch(logOut());

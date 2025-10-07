@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectPlaces } from '../../redux/AppRedux/selectors';
 import {
   selectContactsFilter,
   selectFilterUp,
-  selectFilterDown
+  selectFilterDown,
 } from '../../redux/AppRedux/selectors';
 import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
@@ -18,6 +19,7 @@ import {
 import icons from './icons.svg';
 
 export const Filter = () => {
+  const [isTrue, setIfTrue] = useState(true);
   const searchTermId = nanoid();
   const places = useSelector(selectPlaces);
   const filterUpper = useSelector(selectFilterUp);
@@ -30,8 +32,9 @@ export const Filter = () => {
   };
   const bestMatches = places.filter(
     place =>
-      place.properties.names.primary.toLowerCase().includes(filterValue.trim().toLowerCase()) &&
-      filterValue.trim() !== ''
+      place.properties.names.primary
+        .toLowerCase()
+        .includes(filterValue.trim().toLowerCase()) && filterValue.trim() !== ''
   );
 
   const handleModalOpen = evt => {
@@ -43,10 +46,13 @@ export const Filter = () => {
     }
   };
 
+  const handleChange = (placesData, evt) => {
+    setIfTrue(evt.target.checked);
 
-   const handleChange = (evt) => {
-      dispatch(updateStatus({ status: evt.target.checked, myUpdateStatusId:evt.target.name}));
-    }
+    dispatch(
+      updateStatus({ data: { ...placesData, status: evt.target.checked } })
+    );
+  };
 
   return (
     <div className={css.contactList}>
@@ -83,7 +89,10 @@ export const Filter = () => {
                     <input
                       type="checkbox"
                       className={css.checkbox}
-                      onChange={handleChange}
+                      onChange={evt => handleChange(place, evt)}
+                      name={place.id}
+                      checked={place.status}
+                      value={place.properties.addresses[0]}
                     />
                     :{' '}
                     <span className={css.contactsPhone} data-id={place.id}>

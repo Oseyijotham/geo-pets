@@ -37,7 +37,6 @@ export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, 
   const isLoading = useSelector(selectIsLoading);
   const isUpdateLoading = useSelector(selectIsUpdateLoading);
   const error = useSelector(selectError);
-  const [taskStatus, setTaskStatus] = useState();
   
   const dispatch = useDispatch();
   const filterValue = useSelector(selectContactsFilter);
@@ -118,7 +117,7 @@ export const ContactList = ({ lowerLimitProp, upperLimitProp, lowerLimitSetter, 
       {children}
       <div style={{ position: 'relative' }}>
         {console.log(isUpdateLoading)}
-        {(isLoading || isUpdateLoading) && (
+        {(isLoading || isUpdateLoading) && filterValue === '' && (
           <div className={css.backDrop}>
             <div className={css.centerStyle}>
               <ThreeCircles
