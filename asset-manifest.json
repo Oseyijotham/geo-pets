@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/geo-pets/static/css/main.1ff47ebf.css",
-    "main.js": "/geo-pets/static/js/main.1aa58f87.js",
+    "main.js": "/geo-pets/static/js/main.4fbafcf4.js",
     "static/css/963.ee965a66.chunk.css": "/geo-pets/static/css/963.ee965a66.chunk.css",
     "static/js/963.14da4813.chunk.js": "/geo-pets/static/js/963.14da4813.chunk.js",
     "static/css/359.838a3f75.chunk.css": "/geo-pets/static/css/359.838a3f75.chunk.css",
@@ -24,8 +24,8 @@
     "static/js/420.afc444e4.chunk.js": "/geo-pets/static/js/420.afc444e4.chunk.js",
     "static/js/600.e953c663.chunk.js": "/geo-pets/static/js/600.e953c663.chunk.js",
     "static/js/522.a54dd384.chunk.js": "/geo-pets/static/js/522.a54dd384.chunk.js",
-    "static/css/138.b065ba48.chunk.css": "/geo-pets/static/css/138.b065ba48.chunk.css",
-    "static/js/138.5f3ade61.chunk.js": "/geo-pets/static/js/138.5f3ade61.chunk.js",
+    "static/css/138.995630ae.chunk.css": "/geo-pets/static/css/138.995630ae.chunk.css",
+    "static/js/138.4285e964.chunk.js": "/geo-pets/static/js/138.4285e964.chunk.js",
     "static/media/gallery.png": "/geo-pets/static/media/gallery.6752956a187eb42e3505.png",
     "static/media/API.png": "/geo-pets/static/media/API.d2578334076868782eee.png",
     "static/media/Profile.png": "/geo-pets/static/media/Profile.2bb3177cb7689ab0ac82.png",
@@ -42,7 +42,7 @@
     "index.html": "/geo-pets/index.html",
     "static/media/list2.svg": "/geo-pets/static/media/list2.143e2e7e12285cdac47190b8872b6f89.svg",
     "main.1ff47ebf.css.map": "/geo-pets/static/css/main.1ff47ebf.css.map",
-    "main.1aa58f87.js.map": "/geo-pets/static/js/main.1aa58f87.js.map",
+    "main.4fbafcf4.js.map": "/geo-pets/static/js/main.4fbafcf4.js.map",
     "963.ee965a66.chunk.css.map": "/geo-pets/static/css/963.ee965a66.chunk.css.map",
     "963.14da4813.chunk.js.map": "/geo-pets/static/js/963.14da4813.chunk.js.map",
     "359.838a3f75.chunk.css.map": "/geo-pets/static/css/359.838a3f75.chunk.css.map",
@@ -65,11 +65,11 @@
     "420.afc444e4.chunk.js.map": "/geo-pets/static/js/420.afc444e4.chunk.js.map",
     "600.e953c663.chunk.js.map": "/geo-pets/static/js/600.e953c663.chunk.js.map",
     "522.a54dd384.chunk.js.map": "/geo-pets/static/js/522.a54dd384.chunk.js.map",
-    "138.b065ba48.chunk.css.map": "/geo-pets/static/css/138.b065ba48.chunk.css.map",
-    "138.5f3ade61.chunk.js.map": "/geo-pets/static/js/138.5f3ade61.chunk.js.map"
+    "138.995630ae.chunk.css.map": "/geo-pets/static/css/138.995630ae.chunk.css.map",
+    "138.4285e964.chunk.js.map": "/geo-pets/static/js/138.4285e964.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1ff47ebf.css",
-    "static/js/main.1aa58f87.js"
+    "static/js/main.4fbafcf4.js"
   ]
 }
