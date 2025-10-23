@@ -14,8 +14,8 @@ import {
   selectIsLoading,
   selectOpenSortedCompletedModal,
   selectedSavedPlace,
-  selectedIsSlideLoading,
   selectOpenCompletedMobileAndTabModal,
+  selectIsSelectedSavedPlaceLoading,
 } from '../../redux/AppRedux/selectors';
 import css from './SortedCompletedTasks.module.css';
 import svg from './icons.svg';
@@ -34,7 +34,7 @@ export const Contacts = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoading);
   const isOpenCompletedMobileAndTabModal = useSelector(selectOpenCompletedMobileAndTabModal);
-  const isSlideLoading = useSelector(selectedIsSlideLoading);
+  const isSelectedSavedPlaceLoading = useSelector(selectIsSelectedSavedPlaceLoading);
  
   const error = useSelector(selectError);
   const isDesktop = useMediaQuery({ query: '(min-width: 1280px)' });
@@ -140,7 +140,7 @@ export const Contacts = () => {
           })}
         >
           <div className={css.modalWindow}>
-            {isSlideLoading && (
+            {isSelectedSavedPlaceLoading && (
               <div className={css.backDrop}>
                 <ThreeCircles
                   visible={true}
@@ -257,7 +257,7 @@ export const Contacts = () => {
           [css.contactsDetailsShow]: isOpenModal && isDesktop,
         })}
       >
-        {isSlideLoading && (
+        {isSelectedSavedPlaceLoading && (
           <div className={css.backDrop}>
             <ThreeCircles
               visible={true}

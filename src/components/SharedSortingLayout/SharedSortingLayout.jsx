@@ -6,22 +6,35 @@ import {
 } from './SharedSortingLayout.styled';
 import { Suspense } from 'react';
 import {
-setSortAll, setSortPending, setSortFulfilled, setSortPastDue
+  setSortAll,
+  setSortPending,
+  setSortFulfilled,
+  setSortPastDue
 } from '../../redux/AuthRedux/operations';
-import { createApiKey } from '../../redux/AppRedux/operations';
+import { createApiKey, fetchCatPics, fetchDogPics } from '../../redux/AppRedux/operations';
 import { useDispatch, useSelector } from 'react-redux';
 import css from './SharedSortingLayout.module.css';
 import { ThreeCircles } from 'react-loader-spinner';
-import { selectKey,selectError,selectIsGenKey } from '../../redux/AppRedux/selectors';
+import { selectKey, selectIsGenKey, selectGenApiKeyError, selectretrieveApiKeyError, selectIsRetKey } from '../../redux/AppRedux/selectors';
+import { useEffect, useState } from 'react';
 
 export const SharedSortingLayout = () => {
+
+  //const hasInitialized = useRef(false);
+
+  const [isInit, setIsInit] = useState(false);
+
   const dispatch = useDispatch();
 
   const myKey = useSelector(selectKey);
 
   const isGenKey = useSelector(selectIsGenKey);
 
-  const error = useSelector(selectError);
+  const error = useSelector(selectGenApiKeyError);
+
+  const retError = useSelector(selectretrieveApiKeyError);
+
+  const retLoading = useSelector(selectIsRetKey);
 
   const handleSortAll = () => {
      dispatch(setSortAll());
@@ -50,10 +63,12 @@ export const SharedSortingLayout = () => {
       })
     );
   }
+  
 
   return (
     <Container>
       {myKey === null && (
+        
         <div className={css.cover}>
           <div className={css.modal}>
             <div className={css.modalLabel}>

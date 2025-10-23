@@ -1,3 +1,26 @@
+.transactionHistory{
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 20px;
+    border-collapse: collapse;
+  text-align: center;
+  padding: 10px;
+  background-color: #87CEEB;
+  font-family: 'Comic Sans MS';
+  color: blue;
+  width:300px;
+}
+
+ th,
+ td {
+  padding: 5px;
+  border: 3px solid #fff;
+}
+
+td {
+     background-color: #48bdeb;
+}
+
 .contactsSection {
   display: flex;
   flex-direction: column;

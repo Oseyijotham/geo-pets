@@ -1,3 +1,19 @@
+.centerStyle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:5px;
+  padding: 10px;
+}
+
+.centerLabel{
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 700;
+}
+
 .cover {
     align-items: flex-start;
     background-color: rgba(0, 0, 0, .8);
@@ -7,7 +23,7 @@
     justify-content: center;
     position: absolute;
     width: 100%;
-    z-index: 1;
+    z-index: 5;
     padding-top: 25px;
     padding-left: 5px;
     padding-right: 5px;

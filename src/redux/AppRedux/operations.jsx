@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Notiflix from 'notiflix';
+import { cache } from 'react';
+import { clearData } from '../AuthRedux/operations';
 
 const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = '';
@@ -13,7 +15,7 @@ const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   });
   try {
     await axios.get('/users/logout');
-
+    thunkAPI.dispatch(clearData());
     clearAuthHeader();
     Notiflix.Loading.remove();
   } catch (error) {
@@ -318,10 +320,10 @@ export const updateSortedPendingContactAvatar = createAsyncThunk(
 export const updateSortedCompletedContactAvatar = createAsyncThunk(
   'contacts/updateSortedCompletedContactAvatar',
   async ({ myFile, myId }, thunkAPI) => {
-    Notiflix.Loading.pulse('Updating Place Avatar...', {
+    /*Notiflix.Loading.pulse('Updating Place Avatar...', {
       svgColor: '#9225ff',
       fontFamily: 'DM Sans',
-    });
+    });*/
     try {
       const res = await axios.patch(
         `/places/avatars/${myId}`,
@@ -329,7 +331,7 @@ export const updateSortedCompletedContactAvatar = createAsyncThunk(
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
 
-      Notiflix.Loading.remove();
+      //Notiflix.Loading.remove();
       Notiflix.Notify.success('Avatar Updated, reflecting now...');
       return res.data;
     } catch (error) {
@@ -1085,7 +1087,7 @@ export const retrieveApiKey = createAsyncThunk(
   'api/retrieveKey',
   async (_, thunkAPI) => {
     try {
-      const res = await axios.get('/users/retrieve');
+      const res = await axios.get('/users/retrieve', { cache: "store" });
       return res.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

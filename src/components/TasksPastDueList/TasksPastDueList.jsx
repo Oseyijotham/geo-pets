@@ -7,6 +7,10 @@ import {
   selectFilterDown,
   selectError,
   selectIsLoading,
+  selectKey,
+  selectKeyName,
+  selectKeyId,
+  selectKeyDate
 } from '../../redux/AppRedux/selectors';
 import {
   deleteContact,
@@ -17,10 +21,9 @@ import {
 } from '../../redux/AppRedux/operations';
 import css from './TasksPastDueList.module.css';
 export const TasksPastDueList = ({ children }) => {
-  const contacts = useSelector(selectPlaces);
-  const filterDown = useSelector(selectFilterDown);
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
+  const myKey = useSelector(selectKey);
+  const myKeyName = useSelector(selectKeyName);
+  const myKeyId = useSelector(selectKeyId);
   const dispatch = useDispatch();
   const handleDelete = evt => {
     evt.target.style.boxShadow = 'inset 0 0 10px 5px rgba(0, 0, 0, 0.3)';
@@ -49,18 +52,9 @@ export const TasksPastDueList = ({ children }) => {
     setTimeout(() => {
       evt.target.style.boxShadow = 'none';
     }, 500);
-    //let fwdWar = lowerLimit + 4;
     
       setLowerLimit(lowerLimit + 4);
       setUpperLimit(upperLimit + 4);
-    
-    /*if (filterValue !== "") {
-      console.log("OK")
-      const str = filterUp;
-      const sto = filterDown
-      dispatch(handleFilterFowardUp(str));
-      dispatch(handleFilterFowardDown(sto));
-    }*/
   }
 
   const handleBackward = (evt) => {
@@ -97,18 +91,11 @@ export const TasksPastDueList = ({ children }) => {
     <div className={css.contactsSection}>
       <h3 className={css.contactsTitle}>Documentation</h3>
       {children}
+      <div className={css.contactsListAlt}>
+        <p>API DETAILS</p>
+      
+      </div>
 
-      {pastDueRay.length === 0 && (
-        <div className={css.contactsListAlt}>
-          {isLoading && !error && (
-            <b className={css.notification}>Loading Saved Places...</b>
-          )}
-          {!isLoading && !error && (
-            <b className={css.notification}>COMING SOON, STAY TUNED</b>
-          )}
-          {!isLoading && error && <b className={css.notification}>Error!!!</b>}
-        </div>
-      )}
       {pastDueRay.length !== 0 && (
         <ul className={css.contactsList}>
           {pastDueRay.map(contact => {
@@ -164,22 +151,6 @@ export const TasksPastDueList = ({ children }) => {
             </button>
           )}
       </div>
-
-      {filterValue !== '' && (
-        <div className={css.navigationArea}>
-          {filterDown !== 0 && (
-            <button className={css.navigationButton} onClick={handleBackward}>
-              Prev
-            </button>
-          )}
-          {/*!(filterUp > bestMatches.length) &&
-            filterUp !== bestMatches.length && (
-              <button className={css.navigationButton} onClick={handleForward}>
-                Forward
-              </button>
-            )*/}
-        </div>
-      )}
     </div>
   );
 };

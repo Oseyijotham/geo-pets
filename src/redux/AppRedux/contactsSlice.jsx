@@ -93,11 +93,15 @@ const contactsSlice = createSlice({
       isLoading: false,
       isUpdateLoading: false,
       isGenKey: false,
+      isRetKey: false,
       isKeyLoading: false,
       isCatPicsLoading: false,
       isDogPicsLoading: false,
       isSavedPlacesLoading: false,
+      isSelectedSavedPlaceLoading: false,
       isDeletePlacesLoading: false,
+      genApiKeyError: null,
+      retrieveApiKeyError: null,
       error: null,
       openMyModal: false,
       openMyMobileAndTabModal: true,
@@ -122,7 +126,7 @@ const contactsSlice = createSlice({
             names: { primary: null },
             addresses: [{}],
             socials: [],
-          }
+          },
         },
       },
       selectedSortedAllContact: {
@@ -176,17 +180,26 @@ const contactsSlice = createSlice({
         state.contacts.dogPageNums = 0;
         state.contacts.countryName = null;
         state.contacts.categoryName = null;
+        state.contacts.key = null;
+        state.contacts.keyName = null;
+        state.contacts.keyId = null;
+        state.contacts.keyDate = null;
       })
-      .addCase(retrieveApiKey.pending, handlePending)
+      .addCase(retrieveApiKey.pending, state => {
+        state.contacts.isRetKey = true;
+      })
       .addCase(retrieveApiKey.fulfilled, (state, action) => {
-        state.contacts.isLoading = false;
+        state.contacts.isRetKey = false;
         state.contacts.error = null;
         state.contacts.key = action.payload.apiKey;
         state.contacts.keyName = action.payload.apiKeyName;
         state.contacts.keyId = action.payload.apiAccountId;
         state.contacts.keyDate = action.payload.apiCreationDate;
       })
-      .addCase(retrieveApiKey.rejected, handleRejected)
+      .addCase(retrieveApiKey.rejected, state => {
+        state.contacts.isRetKey = false;
+        state.contacts.retrieveApiKeyError = true;
+      })
       .addCase(fetchCatPics.pending, state => {
         state.contacts.isCatPicsLoading = true;
       })
@@ -361,15 +374,15 @@ const contactsSlice = createSlice({
       })
 
       .addCase(fetchSavedPlaceById.pending, state => {
-        state.contacts.isSlideLoading = true;
+        state.contacts.isSelectedSavedPlaceLoading = true;
         state.contacts.selectedContact.avatarURL = null;
       })
       .addCase(fetchSavedPlaceById.fulfilled, (state, action) => {
         state.contacts.selectedSavedPlace = action.payload;
-        state.contacts.isSlideLoading = false;
+        state.contacts.isSelectedSavedPlaceLoading = false;
       })
       .addCase(fetchSavedPlaceById.rejected, (state, action) => {
-        state.contacts.isSlideLoading = false;
+        state.contacts.isSelectedSavedPlaceLoading = false;
         state.contacts.isSlideError = action.payload;
       })
 
@@ -563,14 +576,25 @@ const contactsSlice = createSlice({
             action.payload.avatarURL;
         }
       })
+
+      .addCase(updateSortedCompletedContactAvatar.pending, state => {
+        state.contacts.selectedSavedPlace.avatarURL = null;
+        state.contacts.isSelectedSavedPlaceLoading = true;
+      })
       .addCase(
         updateSortedCompletedContactAvatar.fulfilled,
         (state, action) => {
           state.contacts.selectedSavedPlace.avatarURL =
             action.payload.avatarURL;
-
+          state.contacts.isSelectedSavedPlaceLoading = false;
         }
       )
+
+      .addCase(updateSortedCompletedContactAvatar.rejected, state => {
+        state.contacts.error = true;
+        state.contacts.isSelectedSavedPlaceLoading = false;
+      })
+
       .addCase(updateSortedPastDueContactAvatar.fulfilled, (state, action) => {
         state.contacts.selectedSortedPastDueContact.avatarURL =
           action.payload.avatarURL;
@@ -1173,13 +1197,13 @@ const contactsSlice = createSlice({
         state.contacts.isGenKey = false;
         state.contacts.error = null;
         state.contacts.key = action.payload.key;
-        state.contacts.keyName = action.payload.apiKeyName;
-        state.contacts.keyId = action.payload.apiAccountId;
-        state.contacts.keyDate = action.payload.apiCreationDate;
+        state.contacts.keyName = action.payload.name;
+        state.contacts.keyId = action.payload.customAccountId;
+        state.contacts.keyDate = action.payload.createdAt;
       })
       .addCase(createApiKey.rejected, state => {
         state.contacts.isGenKey = false;
-        state.contacts.error = false;
+        state.contacts.genApiKeyError = true;
       });
   },
 });

@@ -24,11 +24,17 @@ export const selectIsUpdateLoading = state => state.contacts.contacts.isUpdateLo
 
 export const selectIsSavedPlacesLoading = state => state.contacts.contacts.isSavedPlacesLoading;
 
+export const selectIsSelectedSavedPlaceLoading = state => state.contacts.contacts.isSelectedSavedPlaceLoading;
+
 export const selectIsDeletePlacesLoading = state => state.contacts.contacts.isDeletePlacesLoading;
 
-export const selectIsKeyLoading = state => state.contacts.contacts.isKeyLoading;
+export const selectIsRetKey= state => state.contacts.contacts.isRetKey;
 
 export const selectError = state => state.contacts.contacts.error;
+
+export const selectGenApiKeyError = state => state.contacts.contacts.genApiKeyError;
+
+export const selectretrieveApiKeyError = state => state.contacts.contacts.retrieveApiKeyError;
 
 export const selectOpenModal = state => state.contacts.contacts.openMyModal;
 
